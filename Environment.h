@@ -10,7 +10,7 @@ public:
 	
 	static std::string GetPath()
 	{
-		return "/Users/oceancx/OpenGL";
+		return "/Users/oceancx/SimpleEngine";
 	}
 
 	static std::string GetAbsPath(std::string localPath)
