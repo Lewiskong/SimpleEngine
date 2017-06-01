@@ -1,5 +1,6 @@
 #include "Engine.h"	
 
+//non-const static data member must be initialized out of line
 Engine * Engine::p_Engine = nullptr;
 
 
