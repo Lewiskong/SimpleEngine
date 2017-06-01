@@ -2,6 +2,7 @@
 
 #include "defines.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "Environment.h"
 
 /*

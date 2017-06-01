@@ -33,7 +33,6 @@ Shader::Shader(const std::string vertPath,const std::string fragPath,const std::
 		vertexCode = vShaderStream.str();
 		fragmentCode = fShaderStream.str();			
 
-		geometryCode="";
 		if(!geomPath.empty())
 		{
 			gShaderFile.open(geomPath.c_str());
@@ -45,7 +44,7 @@ Shader::Shader(const std::string vertPath,const std::string fragPath,const std::
 	}
 	catch (std::ifstream::failure e)
 	{
-		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ\t" << e.what() << std::endl;
+		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ:\n" << e.what() << std::endl;
 	}
 
 
@@ -84,7 +83,6 @@ void Shader::Init(const std::string vertCode,const std::string fragCode,const st
 	{
 		glAttachShader(m_ProgramID, m_GeometryShader);
 	}
-
 
 	glLinkProgram(m_ProgramID);
 	checkCompileErrors(m_ProgramID, "PROGRAM");
