@@ -9,8 +9,8 @@ public:
 	Texture(std::string filePath);
 	~Texture();
 	
-	int32 GetWidth() const {return mHeight;}
-	int32 GetHeight() const {return mWidth;}
+	int32 GetWidth() const {return mWidth;}
+	int32 GetHeight() const {return mHeight;}
 	GLuint GetTextureID() const {return mTextureId;}
 
 private:

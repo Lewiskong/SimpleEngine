@@ -54,6 +54,10 @@ Texture.h
 Texture.cpp
 Sprite.h
 Sprite.cpp
+SpriteBatch.h
+SpriteBatch.cpp
+Singleton.h
+Singleton.inl
 Shader.h
 Shader.cpp
 SenceManager.h
@@ -64,6 +68,8 @@ Engine.h
 Engine.cpp
 Shader/SimpleVertexShader.vert
 Shader/SimpleFragmentShader.frag
+Shader/MvpFragmentShader
+Shader/MvpVertexShader
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -11,9 +11,11 @@
 ## 待完成：
 
 1. 添加Texture类
-2. 完成TextureManager
-3. 完成SpriteBatch
-4. 添加SenceManager,Sence,Object
+2. 添加SpriteBatch
+3. 完成TextureManager
+4. 完成SpriteBatch
+5. 添加SenceManager,Sence,Object
+6. 
 
 
 以上完成才能加游戏功能- -
