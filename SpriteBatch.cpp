@@ -14,13 +14,22 @@ SpriteBatch::~SpriteBatch(void)
 	delete m_pShader;
 }
 
+glm::mat4 view,projection;   
+GLint modelLoc,viewLoc, projLoc;
+
 void SpriteBatch::Init()
 {
 	std::string vPath =  Environment::GetAbsPath("Shader/MvpVertexShader");
 	std::string fPath =  Environment::GetAbsPath("Shader/MvpFragmentShader");
 
 	m_pShader = new Shader(vPath,fPath);
-
+	projection = glm::ortho(0.0f, 800.0f,600.0f,0.0f, -100.0f, 100.0f);
+	view = glm::mat4();
+   // Get the uniform locations
+	modelLoc = glGetUniformLocation(m_pShader->GetProgramID(), "model");
+	viewLoc = glGetUniformLocation(m_pShader->GetProgramID(), "view");
+	projLoc = glGetUniformLocation(m_pShader->GetProgramID(), "projection");
+	
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 }
@@ -60,24 +69,24 @@ void SpriteBatch::Begin()
 		mVertices.push_back(0);			//z
 		mVertices.push_back(0);			//tx
 		mVertices.push_back(0);			//ty
-		mVertices.push_back(alpha);			//alpha
+		mVertices.push_back(alpha);		//alpha
 
 		//TR
-		mVertices.push_back(x+width);			//x
+		mVertices.push_back(x+width);	//x
 		mVertices.push_back(y);			//y
 		mVertices.push_back(0);			//z
 		mVertices.push_back(1);			//tx
 		mVertices.push_back(0);			//ty
-		mVertices.push_back(alpha);			//alpha
+		mVertices.push_back(alpha);		//alpha
 
 
 		//BL
 		mVertices.push_back(x);			//x
-		mVertices.push_back(y+height);			//y
+		mVertices.push_back(y+height);	//y
 		mVertices.push_back(0);			//z
 		mVertices.push_back(0);			//tx
 		mVertices.push_back(1);			//ty
-		mVertices.push_back(alpha);			//alpha
+		mVertices.push_back(alpha);		//alpha
 
 		//BL
 		mVertices.push_back(x);			//x
@@ -134,22 +143,9 @@ void SpriteBatch::Begin()
 
 void SpriteBatch::End()
 {
-	glm::mat4 view;
-	glm::mat4 projection;   
-	GLint modelLoc;
-	GLint viewLoc;
-	GLint projLoc;
-	projection = glm::ortho(0.0f, 800.0f,600.0f,0.0f, -100.0f, 100.0f);
-   // Get the uniform locations
-	modelLoc = glGetUniformLocation(m_pShader->GetProgramID(), "model");
-	viewLoc = glGetUniformLocation(m_pShader->GetProgramID(), "view");
-	projLoc = glGetUniformLocation(m_pShader->GetProgramID(), "projection");
 	
 
-	view=glm::mat4();
-
 	m_pShader->Bind();
-
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (GLfloat*) (&view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, (GLfloat*)(&projection));
 
@@ -163,15 +159,10 @@ void SpriteBatch::End()
 		glUniform1i(glGetUniformLocation(m_pShader->GetProgramID(), "textureSampler"), 0);
 		 // Calculate the model matrix for each object and pass it to shader before drawing
 		glm::mat4 model;
-
 		glm::vec3 s(0.3,0.3,0);
-		 model = glm::scale(model,s);
-		 model = glm::translate(model,glm::vec3(-30.0f,-30.0f,0.0f));        
+		model = glm::scale(model,s);
 
-        // auto pp =  projection * model * view * glm::vec4(pos,1.0f);
-        //std::cout << " pos x:" << pp.x * 800 << " pos y:" << pp.y * -600<< " z:"  << pp.z << " w:" << pp.w << std::endl;
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE,  (GLfloat*)(&model));
-
 		glDrawArrays(GL_TRIANGLES, triangles , triangles+6);
 		triangles+=6;     
 	}
