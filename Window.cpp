@@ -50,6 +50,7 @@ Window::~Window()
 
 void Window::Show()
 {
+    glEnable(GL_DEPTH_TEST);
 
     p_Game->Start();
 	 // Game loop

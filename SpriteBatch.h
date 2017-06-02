@@ -8,11 +8,12 @@
 2. 转化后的东西保存在类里面
 3. 调用Flush后 画面进行绘制
 */
-class SpriteInfo
+struct SpriteInfo
 {
-	glm::vec2 Pos;
-	glm::vec2 Size;
-	GLuint TextureID;
+	glm::vec2 Pos;			//要显示的位置 （0~800，0~600）
+	glm::vec2 Size;			//要显示宽高	  
+	float Alpha=1.0f;
+	GLuint TextureID;		//可以取到Texture 就能取到宽高
 };
 
 class SpriteBatch final : public Singleton<SpriteBatch>
@@ -37,6 +38,10 @@ private:
 	static const uint32 FIRST_REAL_ASCII_CHAR = 31;
 
 	std::vector<const SpriteInfo*> m_SpriteQueue;
-	Shader* m_ShaderPtr;
+	std::vector<GLfloat> mVertices;
+
+	GLuint VAO,VBO;
+	
+	Shader* m_pShader;
 
 };

@@ -9,7 +9,7 @@ mHeight(0)
 {
 	mPath = filePath;
 	std::cout << "file:" << mPath << std::endl;
-	mFormat = GL_RGB;
+	mFormat = GL_RGBA;
 	uint8* lImageBuffer = SOIL_load_image(mPath.c_str(), &mWidth,&mHeight, 0, SOIL_LOAD_RGB);
 	if(lImageBuffer == NULL)
 	{
@@ -28,7 +28,7 @@ mHeight(0)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexImage2D(GL_TEXTURE_2D, 0, mFormat, mWidth, mHeight, 0, mFormat, GL_UNSIGNED_BYTE, lImageBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, mFormat, mWidth, mHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, lImageBuffer);
 
 	delete[] lImageBuffer;
 }
