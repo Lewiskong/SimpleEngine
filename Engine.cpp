@@ -26,7 +26,6 @@ Engine::Engine()
 
 glm::vec3 cubePositions[] = 
 {
-    glm::vec3(2.0f, 5.0f, -15.0f), 
     glm::vec3(0.0f, 0.0f, 0.0f), 
     glm::vec3(2.0f, 5.0f, -15.0f), 
     glm::vec3(-1.5f, -2.2f, -2.5f),  
@@ -45,9 +44,9 @@ int tw,th;
 void Engine::Init()
 {
     glCullFace(GL_BACK);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    p_Texture = new Texture("/Users/oceancx/SimpleEngine/Resource/Assets/bizhi.jpg");
+    p_Texture = new Texture("/Users/oceancx/SimpleEngine/Resource/Assets/wall.jpg");
     tw = p_Texture->GetWidth();
     th = p_Texture->GetHeight();
 
@@ -57,7 +56,7 @@ void Engine::Init()
 
 void Engine::Update()
 {
-    
+
     for(int i=0;i<1;i++)
     {
         SpriteInfo* info = new SpriteInfo();
@@ -72,7 +71,8 @@ void Engine::Update()
 
     glm::mat4 view;
     glm::mat4 projection;   
-    glm::vec3 pos = glm::vec3(0.0f,0.0f,1.0f);
+
+    glm::vec3 pos = glm::vec3(0,0,3);
     glm::vec3 front = glm::vec3(0.0f,0.0f,-1.0f);
     glm::vec3 up = glm::vec3(0.0f,1.0f,0.0f);
     view = glm::lookAt(pos, pos + front, up);
@@ -86,7 +86,7 @@ void Engine::Update()
         model = glm::translate(model,cubePositions[i]);            
         GLfloat angle = 20.0f * i; 
         model = glm::rotate(model, angle, glm::vec3(1.0f, 0.3f, 0.5f));
-           
+
         CubeInfo* info = new CubeInfo();
         info->Model =glm::mat4(model);
         info->View =glm::mat4(view);
