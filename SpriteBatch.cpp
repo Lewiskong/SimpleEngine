@@ -14,15 +14,13 @@ SpriteBatch::~SpriteBatch(void)
 	delete m_pShader;
 }
 
-glm::mat4 view,projection;   
-GLint modelLoc,viewLoc, projLoc;
-
 void SpriteBatch::Init()
 {
 	std::string vPath =  Environment::GetAbsPath("Shader/MvpVertexShader");
 	std::string fPath =  Environment::GetAbsPath("Shader/MvpFragmentShader");
 
 	m_pShader = new Shader(vPath,fPath);
+	m_pShader->Bind();
 	projection = glm::ortho(0.0f, 800.0f,600.0f,0.0f, -100.0f, 100.0f);
 	view = glm::mat4();
    // Get the uniform locations
@@ -32,12 +30,16 @@ void SpriteBatch::Init()
 	
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+	m_pShader->Unbind();
 }
 
 void SpriteBatch::Flush()
 {
+	m_pShader->Bind();
 	Begin();
 	End();
+	m_pShader->Unbind();
+	m_SpriteQueue.clear();
 }
 
 void SpriteBatch::AddSprite(const SpriteInfo* spriteInfo)
@@ -143,9 +145,6 @@ void SpriteBatch::Begin()
 
 void SpriteBatch::End()
 {
-	
-
-	m_pShader->Bind();
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, (GLfloat*) (&view));
 	glUniformMatrix4fv(projLoc, 1, GL_FALSE, (GLfloat*)(&projection));
 

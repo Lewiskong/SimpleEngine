@@ -56,6 +56,8 @@ Sprite.h
 Sprite.cpp
 SpriteBatch.h
 SpriteBatch.cpp
+CubeBatch.h
+CubeBatch.cpp
 Singleton.h
 Singleton.inl
 Shader.h

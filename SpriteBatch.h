@@ -43,5 +43,8 @@ private:
 	GLuint VAO,VBO;
 	
 	Shader* m_pShader;
+		
+	glm::mat4 view,projection;   
+	GLint modelLoc,viewLoc, projLoc;
 
 };
