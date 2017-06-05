@@ -13,7 +13,7 @@ public:
 	bool CompareName(const std::string& name) { return mName == name; }
 
 	virtual void Destroy() = 0;
-
+	
 protected:
 	std::string mName;
 

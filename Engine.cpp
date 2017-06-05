@@ -47,7 +47,7 @@ void Engine::Init()
     glCullFace(GL_BACK);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    p_Texture = new Texture("/Users/oceancx/SimpleEngine/Resource/Assets/wall.jpg");
+    p_Texture = new Texture("/Users/oceancx/SimpleEngine/Resource/Assets/bizhi.jpg");
     tw = p_Texture->GetWidth();
     th = p_Texture->GetHeight();
 
@@ -76,7 +76,7 @@ void Engine::Update()
     {
         SpriteInfo* info = new SpriteInfo();
         info->Pos.x = 100+i*10;
-        info->Pos.y = -1600+i*10;
+        info->Pos.y = -200+i*10;
         info->Size.x = tw;
         info->Size.y = th;
         info->Alpha = 0.9f;
@@ -88,25 +88,25 @@ void Engine::Update()
 
     if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_W))
     {
-        pos.y--;
+        pos.y-=0.1F;
     }
 
 
     if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_A))
     {
-        pos.x++;
+        pos.x+=0.1F;
     }
 
 
     if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_S))
     {
-        pos.y++;
+        pos.y+=0.1F;
     }
 
 
     if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_D))
     {
-        pos.x--;
+        pos.x-=0.1F;
     }
 
     view = glm::lookAt(pos, pos + front, up);
