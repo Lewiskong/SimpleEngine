@@ -5,7 +5,7 @@ class Entity
 {
 public:
 	Entity(): mName("") {}
-	Entity(const std::string name): mName(name) {}
+	Entity(const std::string& name): mName(name) {}
 	virtual ~Entity() {}
 
 	const std::string & GetName() const { return mName; }

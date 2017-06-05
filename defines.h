@@ -31,3 +31,12 @@ typedef long double float128;
 #include <glm/gtc/matrix_transform.hpp>
 
 
+template <typename T>
+inline void SafeDelete(T * &pointer)
+{
+	if(pointer != nullptr)
+	{
+		delete pointer;
+		pointer = nullptr;
+	}
+}
