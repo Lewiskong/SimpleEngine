@@ -46,6 +46,12 @@ Environment.h
 #main.cpp
 global.h
 defines.h
+Components/BaseComponent.h
+Components/BaseComponent.cpp
+Components/TransformComponent.h
+Components/TransformComponent.cpp
+InputManager.h
+InputManager.cpp
 Window.h
 Window.cpp
 TextureManager.h

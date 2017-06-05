@@ -3,10 +3,7 @@
 #include "global.h"
 #include "Shader.h"
 #include "Environment.h"
-
-// Function prototypes
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
-
+#include "InputManager.h"
 
 Window::Window(int width,int height)
 {
@@ -34,11 +31,8 @@ Window::Window(int width,int height)
 	glfwGetFramebufferSize(p_Window, &width, &height);
 	glViewport(0, 0, width, height);
 
-    // Set the required callback functions
-    glfwSetKeyCallback(p_Window, key_callback);
-
-
     p_Game = new Game(width,height,WINDOW_TITLE);
+    InputManager::GetInstance()->Init(p_Window);
 
 }
 
@@ -53,6 +47,7 @@ void Window::Show()
     glEnable(GL_DEPTH_TEST);
 
     p_Game->Start();
+
 	 // Game loop
     while (!glfwWindowShouldClose(p_Window))
     {
@@ -76,12 +71,4 @@ void Window::Show()
     glfwTerminate();
 }
 
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
-        glfwSetWindowShouldClose(window, GL_TRUE);
-        
-    }
-}
 

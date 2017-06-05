@@ -1,6 +1,7 @@
 #include "Engine.h"	
 #include "SpriteBatch.h"
 #include "CubeBatch.h"
+#include "InputManager.h"
 
 //non-const static data member must be initialized out of line
 Engine * Engine::p_Engine = nullptr;
@@ -52,7 +53,21 @@ void Engine::Init()
 
     SpriteBatch::GetInstance()->Init();
     CubeBatch::GetInstance()->Init();
+    
+    InputManager::GetInstance()->SetKeyCallback();
+    InputManager::GetInstance()->SetScrollCallback();
+    InputManager::GetInstance()->SetMouseCallback();
 }
+
+glm::mat4 view;
+glm::mat4 projection = glm::perspective(45.0f, 800.0f/600.0f, 0.1f, 1000.0f);;   
+
+glm::vec3 pos = glm::vec3(0,0,3);
+glm::vec3 front = glm::vec3(0.0f,0.0f,-1.0f);
+glm::vec3 up = glm::vec3(0.0f,1.0f,0.0f);
+
+
+
 
 void Engine::Update()
 {
@@ -66,18 +81,35 @@ void Engine::Update()
         info->Size.y = th;
         info->Alpha = 0.9f;
         info->TextureID = p_Texture->GetTextureID();
+
         SpriteBatch::GetInstance()->AddSprite(info);
     }
 
-    glm::mat4 view;
-    glm::mat4 projection;   
 
-    glm::vec3 pos = glm::vec3(0,0,3);
-    glm::vec3 front = glm::vec3(0.0f,0.0f,-1.0f);
-    glm::vec3 up = glm::vec3(0.0f,1.0f,0.0f);
+    if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_W))
+    {
+        pos.y--;
+    }
+
+
+    if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_A))
+    {
+        pos.x++;
+    }
+
+
+    if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_S))
+    {
+        pos.y++;
+    }
+
+
+    if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_D))
+    {
+        pos.x--;
+    }
+
     view = glm::lookAt(pos, pos + front, up);
-    projection = glm::perspective(45.0f, 800.0f/600.0f, 0.1f, 1000.0f);
-
 
     for(int i=0;i<10;i++)
     {
