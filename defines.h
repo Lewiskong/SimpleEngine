@@ -15,6 +15,10 @@ typedef float		float32;
 typedef double		float64;
 typedef long double float128;
 
+
+typedef uint8_t BYTE,  byte;
+typedef uint8_t PBYTE;
+
 #include <string>
 #include <sstream>
 #include <iostream>

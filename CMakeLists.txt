@@ -41,6 +41,14 @@ set(ALL_LIBS
 )
 
 add_executable(${PROJECT_NAME}
+ThirdParty/NetEase/MAP.cpp
+ThirdParty/NetEase/MAP.h
+ThirdParty/NetEase/Sprite2.h
+ThirdParty/NetEase/Sprite2.cpp
+ThirdParty/NetEase/WAS.h
+ThirdParty/NetEase/WAS.cpp
+ThirdParty/NetEase/WDF.cpp
+ThirdParty/NetEase/WDF.h
 program.cpp
 Environment.h
 #main.cpp
