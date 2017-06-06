@@ -49,6 +49,8 @@ defines.h
 Objects/Object.h
 Objects/Object.inl
 Objects/Object.cpp
+Objects/MapObject.h
+Objects/MapObject.cpp
 Components/BaseComponent.h
 Components/BaseComponent.cpp
 Components/TransformComponent.h

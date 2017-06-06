@@ -26,8 +26,6 @@ public:
 
 	bool IsInitialized() const;
 
-	virtual void Reset();
-
 	TransformComponent * GetTransform() const;
 
 	void AddComponent(BaseComponent* pComponent);
@@ -76,6 +74,7 @@ protected:
 
 	void DestroyGarbageElement(const GarbageInfo & info);
 
+	virtual void Reset();
 	virtual void Initialize();
 	virtual void AfterInitialized();
 	virtual void Update();

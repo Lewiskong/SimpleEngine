@@ -3,15 +3,9 @@
 #include "../Components/TransformComponent.h"
 
 Object::Object()
-: Entity()
-, m_bIsInitialized(false)
-, m_IsActive(false)
-, m_pParentGameObject(nullptr)
-, m_pGarbageContainer()
-, m_pComponents()
-, m_pChildren()
+:Object("")
 {
-	m_pComponents.push_back(new TransformComponent());
+	//m_pComponents.push_back(new TransformComponent());
 }
 
 
@@ -25,6 +19,7 @@ Object::Object(const std::string & name)
 , m_pChildren()
 {
 	m_pComponents.push_back(new TransformComponent());
+	std::cout << "push_back is called" << std::endl;
 }
 
 Object::~Object()
