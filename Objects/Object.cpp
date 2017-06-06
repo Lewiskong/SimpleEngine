@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "../Logger.h"
+#include "../Components/TransformComponent.h"
 
 Object::Object()
 : Entity()

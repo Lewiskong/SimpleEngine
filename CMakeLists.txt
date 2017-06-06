@@ -46,13 +46,13 @@ Environment.h
 #main.cpp
 global.h
 defines.h
+Objects/Object.h
+Objects/Object.inl
+Objects/Object.cpp
 Components/BaseComponent.h
 Components/BaseComponent.cpp
 Components/TransformComponent.h
 Components/TransformComponent.cpp
-Objects/Object.h
-Objects/Object.inl
-Objects/Object.cpp
 InputManager.h
 InputManager.cpp
 Window.h

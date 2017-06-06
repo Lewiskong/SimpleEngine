@@ -1,20 +1,21 @@
 #include "BaseComponent.h"
+#include "../Objects/Object.h"
 
 BaseComponent::BaseComponent()
 	:Entity()
-//	, m_pParentObject(nullptr)
+	, m_pParentObject(nullptr)
 	, m_bInitialized(false)
 	, m_bIsActive(false)
 {
 }
 
-// BaseComponent::BaseComponent(Object* parent)
-// 	:Entity()
-// //	, m_pParentObject(parent)
-// 	, m_bInitialized(false)
-// 	, m_bIsActive(false)
-// {
-// }
+BaseComponent::BaseComponent(Object* parent)
+	:Entity()
+	, m_pParentObject(parent)
+	, m_bInitialized(false)
+	, m_bIsActive(false)
+{
+}
 
 BaseComponent::~BaseComponent()
 {
@@ -34,7 +35,7 @@ void BaseComponent::Initialize()
 
 void BaseComponent::Destroy()
 {
-	//m_pParentObject->RemoveComponent(this);
+	m_pParentObject->RemoveComponent(this);
 }
 
 void BaseComponent::BaseUpdate()
@@ -58,15 +59,15 @@ bool BaseComponent::IsInitialized() const
 	return m_bInitialized;
 }
 
-// Object* BaseComponent::GetParent() const
-// {
-// 	return m_pParentObject;
-// }
+Object* BaseComponent::GetParent() const
+{
+	return m_pParentObject;
+}
 
-// void BaseComponent::SetParent(Object * parent)
-// {
-// 	m_pParentObject = parent;
-// }
+void BaseComponent::SetParent(Object * parent)
+{
+	m_pParentObject = parent;
+}
 
 void BaseComponent::SetActive(bool active)
 {

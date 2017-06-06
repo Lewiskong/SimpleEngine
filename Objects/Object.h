@@ -4,6 +4,8 @@
 #include "../Components/BaseComponent.h"
 #include "../Components/TransformComponent.h"
 
+class BaseComponent;
+
 class Object : public Entity
 {
 public:

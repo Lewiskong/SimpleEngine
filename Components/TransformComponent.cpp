@@ -1,7 +1,8 @@
 #include "TransformComponent.h"
 
-TransformComponent::TransformComponent()
-:m_IsChanged(TransformComponent::ALL)
+TransformComponent::TransformComponent(Object* parent)
+:BaseComponent(parent)
+,m_IsChanged(TransformComponent::ALL)
 ,m_Invalidate(false)
 ,m_WorldPosition(0,0,0)
 ,m_LocalPosition(0,0,0)
@@ -14,6 +15,13 @@ TransformComponent::TransformComponent()
 {
 
 }
+
+TransformComponent::TransformComponent()
+:TransformComponent(nullptr)
+{
+
+}
+
 
 TransformComponent::~TransformComponent()
 {

@@ -2,6 +2,8 @@
 
 #include "BaseComponent.h"
 
+class Object;
+
 class TransformComponent final : public BaseComponent
 {
 public:
@@ -14,7 +16,8 @@ public:
 		ALL = 7
 	};
 
-	TransformComponent(); //Object* parent
+	TransformComponent(); 
+	TransformComponent(Object* parent); 
 	~TransformComponent();
 
 	void Update();
@@ -84,7 +87,6 @@ private:
 
 	glm::vec3 m_CenterPosition;
 	
-
 	glm::mat4 m_World;
 
 	TransformComponent(const TransformComponent& yRef);
