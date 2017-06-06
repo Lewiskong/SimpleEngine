@@ -53,6 +53,8 @@ Components/BaseComponent.h
 Components/BaseComponent.cpp
 Components/TransformComponent.h
 Components/TransformComponent.cpp
+Projects/TestSence.cpp
+Projects/TestSence.h
 InputManager.h
 InputManager.cpp
 Window.h
