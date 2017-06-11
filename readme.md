@@ -15,6 +15,7 @@
 3. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，直接在SimpleEngine/下解压即可,你会看到Data/文件夹被创建
 
 4. 然后：
+
 		cd SimpleEngine/
 		mkdir build
 		cd build
