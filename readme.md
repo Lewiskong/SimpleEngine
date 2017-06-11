@@ -6,7 +6,7 @@
 
 1. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，解压文件到 Data/
 
-2. 进入根目录，敲命令
+2. 安装好git和cmake,然后敲命令
 		
 		git clone --recursive https://github.com/oceancx/SimpleEngine
 		cd SimpleEngine
