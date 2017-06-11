@@ -4,9 +4,7 @@
 
 ### Mac编译指南
 
-1. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，解压文件到 Data/
-
-2. 安装好git和cmake,然后敲命令
+1. 安装好git和cmake,然后敲命令
 		
 		git clone --recursive https://github.com/oceancx/SimpleEngine
 		cd SimpleEngine
@@ -14,7 +12,16 @@
 		cd build
 		cmake ..
 		make -j8
+
+2. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，直接在SimpleEngine/下解压即可
+
+3. 然后：
+
+		cd build/
 		./SimpleEngine
+
+
+
 
 
 ### 截图
@@ -31,9 +38,8 @@
 
 ### Mac build
 
-1. download resource zip file ：[baidu pan](https://pan.baidu.com/s/1o7Gn0t8) , and extract to Data/
 
-2. install cmake and git,then :
+1. install cmake and git,then :
 		
 		git clone --recursive https://github.com/oceancx/SimpleEngine
 		cd SimpleEngine
@@ -41,6 +47,13 @@
 		cd build
 		cmake ..
 		make -j8
+	
+
+2. download resource zip file ：[baidu pan](https://pan.baidu.com/s/1o7Gn0t8) , and extract to SimpleEngine/
+
+3. then:
+
+		cd build
 		./SimpleEngine
 
 ### ScreenShots
