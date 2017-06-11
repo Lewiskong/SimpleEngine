@@ -4,6 +4,7 @@
 #include <sstream>
 #include "Heap.h"
 #include "mhxy.h"
+#include "../Environment.h"
 using namespace std;
 
 Config::Config(std::string filename)
@@ -16,7 +17,7 @@ Config::Config(std::string filename)
 		if (line[0] == '#')break;
 		if (line_count == 0)
 		{
-			mRootDir = line;
+			mRootDir = Environment::GetAbsPath(line);
 			line_count++;
 		}
 		else

@@ -1,21 +1,50 @@
-# 练手引擎
+# C++/OpenGL 梦幻西游
 
-完成度%0.001，目前此repo只供个人开发。
+个人学习练手项目
 
-## 目标：
+### Mac编译指南
 
-1. 足够简单
-2. 构架清晰 实现可以啰嗦
+1. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，解压文件到 Data/
+
+2. 进入根目录，敲命令
+		
+		git clone --recursive https://github.com/oceancx/SimpleEngine
+		cd SimpleEngine
+		mkdir build
+		cd build
+		cmake ..
+		make -j8
+		./SimpleEngine
 
 
-## 待完成：
+### 截图
 
-1. 添加Texture类
-2. 添加SpriteBatch
-3. 完成TextureManager
-4. 完成SpriteBatch
-5. 添加SenceManager,Sence,Object
-6. 
+<img src="https://github.com/oceancx/SimpleEngine/blob/develop/ScreenShots/screenshot1.png" width="50%" height="50%">
+
+<img src="https://github.com/oceancx/SimpleEngine/blob/develop/ScreenShots/screenshot2.png" width="50%" height="50%">
 
 
-以上完成才能加游戏功能- -
+
+# C++/OpenGL Project Intro
+
+ Fantasy Westward Journey, individual learning and training project.
+
+### Mac build
+
+1. download resource zip file ：[baidu pan](https://pan.baidu.com/s/1o7Gn0t8) , and extract to Data/
+
+2. install cmake and git,then :
+		
+		git clone --recursive https://github.com/oceancx/SimpleEngine
+		cd SimpleEngine
+		mkdir build
+		cd build
+		cmake ..
+		make -j8
+		./SimpleEngine
+
+### ScreenShots
+
+<img src="https://github.com/oceancx/SimpleEngine/blob/develop/ScreenShots/screenshot1.png" width="50%" height="50%">
+
+<img src="https://github.com/oceancx/SimpleEngine/blob/develop/ScreenShots/screenshot2.png" width="50%" height="50%">

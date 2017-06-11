@@ -1,4 +1,4 @@
-/Users/oceancx/mhxy_official
+Data
 map 1501.map
 shape.wdf 49386FCE 54F3FC94 
 shape.wd3 31034D66 DFC62A73 
