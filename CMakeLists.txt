@@ -65,6 +65,14 @@ Components/TransformComponent.h
 Components/TransformComponent.cpp
 Projects/TestSence.cpp
 Projects/TestSence.h
+Projects/Demo.h
+Projects/Demo.cpp
+Projects/Astar.h
+Projects/Astar.cpp
+Projects/GameMap.cpp
+Projects/GameMap.h
+Projects/Config.h
+Projects/Config.cpp
 InputManager.h
 InputManager.cpp
 Window.h
@@ -77,6 +85,10 @@ Sprite.h
 Sprite.cpp
 SpriteBatch.h
 SpriteBatch.cpp
+SpriteRenderer.h
+SpriteRenderer.cpp
+ResourceManager.h
+ResourceManager.cpp
 CubeBatch.h
 CubeBatch.cpp
 Singleton.h

@@ -11,7 +11,7 @@ public:
 	Game(int w,int h,std::string title);
 	~Game();
 	void Start();
-	void Update();
+	void Update(double dt);
 	void Draw();
 	void End();
 

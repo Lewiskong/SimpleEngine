@@ -6,7 +6,9 @@
 class Texture
 {
 public:
+	Texture();
 	Texture(std::string filePath);
+	Texture(int width,int height,bool alpha,uint8 *lImageBuffer);
 	~Texture();
 	
 	int32 GetWidth() const {return mWidth;}

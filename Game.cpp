@@ -25,9 +25,9 @@ void Game::Start()
  
 }
 
-void  Game::Update()
+void  Game::Update(double dt)
 {
-	Engine::GetInstance()->Update();
+	Engine::GetInstance()->Update(dt);
 }
 
 void  Game::Draw()

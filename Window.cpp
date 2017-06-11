@@ -31,6 +31,8 @@ Window::Window(int width,int height)
 	glfwGetFramebufferSize(p_Window, &width, &height);
 	glViewport(0, 0, width, height);
 
+    glfwSetInputMode(p_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
     p_Game = new Game(width,height,WINDOW_TITLE);
     InputManager::GetInstance()->Init(p_Window);
 
@@ -41,24 +43,32 @@ Window::~Window()
 	
 }
 
+GLfloat deltaTime = 0;
+GLfloat lastFrame = 0.0f;
 
 void Window::Show()
 {
-    glEnable(GL_DEPTH_TEST);
+    
 
     p_Game->Start();
 
 	 // Game loop
     while (!glfwWindowShouldClose(p_Window))
     {
+        GLfloat currentFrame = glfwGetTime();
+       
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+      
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
     	glfwPollEvents();
 
-        
+        p_Game->Update(deltaTime);
+
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        p_Game->Update();
+        
         
         p_Game->Draw();
 

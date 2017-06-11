@@ -14,10 +14,11 @@ public:
 
 	~Engine();
 	void Init();
-	void Update();
+	void Update(double dt);
 	void Draw();
-
+	double GetDeltaTime() { return m_DeltaTime; }
 private:
 	Engine();
+	double m_DeltaTime;
 
 };
