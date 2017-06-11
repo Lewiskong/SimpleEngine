@@ -7,19 +7,20 @@
 1. 安装好git和cmake,然后敲命令
 		
 		git clone --recursive https://github.com/oceancx/SimpleEngine
-		cd SimpleEngine
+
+2. 编译之前将Environment.h中WORK_DIR宏设置为SimpleEngine的路径，例如：
+		
+		#define WORK_DIR "/Users/oceancx/SimpleEngine"
+
+3. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，直接在SimpleEngine/下解压即可,你会看到Data/文件夹被创建
+
+4. 然后：
+		cd SimpleEngine/
 		mkdir build
 		cd build
 		cmake ..
 		make -j8
-
-2. 下载资源压缩包：[百度云盘](https://pan.baidu.com/s/1o7Gn0t8)，直接在SimpleEngine/下解压即可
-
-3. 然后：
-
-		cd build/
 		./SimpleEngine
-
 
 
 
@@ -39,21 +40,23 @@
 ### Mac build
 
 
-1. install cmake and git,then :
+1. install cmake and git,then:
 		
 		git clone --recursive https://github.com/oceancx/SimpleEngine
-		cd SimpleEngine
+
+2. before build,in file "Environment.h",set WORK_DIR as SimpleEngine's path，for instance：
+
+		#define WORK_DIR "/Users/oceancx/SimpleEngine"
+
+3. download resource zip file ：[baidu pan](https://pan.baidu.com/s/1o7Gn0t8) , and extract to SimpleEngine/ , you will see a new dir Data/ was created.
+
+4. then,happy to build:
+
+		cd SimpleEngine/
 		mkdir build
 		cd build
 		cmake ..
 		make -j8
-	
-
-2. download resource zip file ：[baidu pan](https://pan.baidu.com/s/1o7Gn0t8) , and extract to SimpleEngine/
-
-3. then:
-
-		cd build
 		./SimpleEngine
 
 ### ScreenShots

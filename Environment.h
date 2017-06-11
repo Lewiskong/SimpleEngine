@@ -2,6 +2,7 @@
 
 #include "defines.h"
 
+#define WORK_DIR "/Users/oceancx/SimpleEngine"
 class Environment
 {
 public:
@@ -10,7 +11,7 @@ public:
 	
 	static std::string GetPath()
 	{
-		return "/Users/oceancx/SimpleEngine";
+		return WORK_DIR;
 	}
 
 	static std::string GetAbsPath(std::string localPath)
