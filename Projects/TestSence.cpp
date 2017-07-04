@@ -55,8 +55,8 @@ void TestSence::Update()
 		SpriteInfo* info = new SpriteInfo();
 		info->Pos.x = 100+i*10;
 		info->Pos.y = -200+i*10;
-		info->Size.x = tw;
-		info->Size.y = th;
+		(info->Size).x = tw;
+		(info->Size).y = th;
 		info->Alpha = 0.9f;
 		info->TextureID = p_Texture->GetTextureID();
 

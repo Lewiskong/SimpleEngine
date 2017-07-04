@@ -2,7 +2,9 @@
 
 #include "defines.h"
 
-#define WORK_DIR "/Users/oceancx/SimpleEngine"
+//#define WORK_DIR "/Users/oceancx/SimpleEngine"
+#define WORK_DIR "F:/Github/SimpleEngine"
+
 class Environment
 {
 public:

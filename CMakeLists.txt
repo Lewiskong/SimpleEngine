@@ -38,7 +38,9 @@ add_subdirectory(external/SOIL)
 include_directories(SYSTEM external/SOIL/include)
 
 if(WIN32)
+	find_package(OpenGL REQUIRED)
 	set(LIBS glfw opengl32 libglew_static SOIL_Static assimp)
+	list(APPEND LIBS ${OPENGL_LIBRARY}) 
 elseif(UNIX)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
   # Linux packages native to CMake
@@ -80,7 +82,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 # c++11
 if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"))
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 # clang && debug adds address sanitizer
 if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") AND NOT APPLE)
@@ -88,13 +90,13 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address")
 endif()
 
 
-
+set (CMAKE_CXX_STANDARD 11)
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
-set(DIR_COMMONLIB "/Users/oceancx/CommonLib")
+
 
 add_definitions(
-	-std=c++11
+	#-std=c++11
 	-DTW_STATIC
 	-DTW_NO_LIB_PRAGMA
 	-DTW_NO_DIRECT3D
@@ -141,6 +143,7 @@ Projects/Astar.cpp
 Projects/GameMap.cpp
 Projects/GameMap.h
 Projects/Config.h
+Projects/config.txt
 Projects/Config.cpp
 InputManager.h
 InputManager.cpp
@@ -183,3 +186,7 @@ target_link_libraries(${PROJECT_NAME}
 
 set_target_properties(${PROJECT_NAME} PROPERTIES XCODE_ATTRIBUTE_CONFIGURATION_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
+# Xcode and Visual working directories
+
+#create_target_launcher(${PROJECT_NAME} WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/")
+#create_default_target_launcher(${PROJECT_NAME} WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/")

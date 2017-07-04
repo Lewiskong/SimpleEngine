@@ -114,7 +114,9 @@ void SpriteBatch::Begin()
 		mVertices.push_back(1);			//ty
 		mVertices.push_back(alpha);			//alpha
 	}
-	GLfloat vertices[mVertices.size()];
+	
+
+	std::vector<GLfloat> vertices;
 	for(int i=0;i<mVertices.size();i++)
 	{
 		vertices[i] = mVertices[i];
@@ -124,7 +126,7 @@ void SpriteBatch::Begin()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof( vertices),vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof( vertices),&vertices[0], GL_STATIC_DRAW);
 
     // Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);

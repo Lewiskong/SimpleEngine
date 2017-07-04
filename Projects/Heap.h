@@ -14,14 +14,14 @@ class Heap {
 public:
 	typedef T value_type;
 	typedef typename std::vector<T*>::size_type size_type;
-	//构造函数
+
 	Heap();
 	//Heap(std::initializer_list<T> il){};
 	~Heap();
-	// Heap中的元素数目
+	
 	size_type size() const { return data->size(); }
 	bool empty() const { return data->empty(); }
-	//添加和删除元素
+
 	void add(const T t);
 	void remove(int index);
 	void update(int index, const T t);
@@ -30,7 +30,7 @@ public:
 	void sort();
 	void print();
 	void clear();
-	//元素访问
+	
 	T pop();
 
 	T& operator[](size_type i);
@@ -38,7 +38,6 @@ public:
 	//private:
 	std::shared_ptr<std::vector<T>> data;
 	//std::vector<T>* data;
-	// 若data[i]无效，则抛出msg
 	//void check(size_type i,const std::string &msg) const;
 };
 
@@ -111,12 +110,6 @@ int Heap<T>::updateTop(int cur)
 }
 
 
-/*向堆中添加元素
-插入算法：
-{
-直接插入，然后往上更新节点。
-}
-*/
 template <typename T>
 void Heap<T>::add(const T t)
 {
@@ -125,11 +118,6 @@ void Heap<T>::add(const T t)
 	updateTop(cur);
 }
 
-/*
-删除算法：
-用最后一个元素来替换被删除的元素
-然后
-*/
 template <typename T>
 void Heap<T>::remove(int index)
 {

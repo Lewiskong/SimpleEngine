@@ -2,6 +2,11 @@
 #include <fstream>
 
 
+
+int dir_x[8] = { 0, 1, 0, -1, 1, 1, -1, -1 };
+int dir_y[8] = { -1, 0, 1, 0, -1, 1, 1, -1 };
+
+
 Astar::~Astar()
 {
 
@@ -65,7 +70,6 @@ bool Astar::PathFinding(int sx, int sy, int ex, int ey)
 	insertVis(sx, sy, start_node, mVisOpen);
 
 	while (!mOpenList.empty()) {
-		// 		//找到最低价的 弹出
 		eraseVis(sx, sy, mVisOpen);
 		Node* cur_node = mOpenList.pop();
 	//	mOpenList.print();
@@ -77,7 +81,6 @@ bool Astar::PathFinding(int sx, int sy, int ex, int ey)
 
 		if (cur_node->x == ex && cur_node->y == ey) {
 			printf("搜索完成\n");
-			//找到了路径 从cur_node这里开始回溯
 			Node* p = cur_node;
 			do {
 				Pos tmpPos;

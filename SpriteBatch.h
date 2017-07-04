@@ -10,10 +10,17 @@
 */
 struct SpriteInfo
 {
-	glm::vec2 Pos;			//要显示的位置 （0~800，0~600）
-	glm::vec2 Size;			//要显示宽高	  
-	float Alpha=1.0f;
-	GLuint TextureID;		//可以取到Texture 就能取到宽高
+	glm::vec2 Pos;			
+	glm::vec2 Size;	
+
+	float Alpha;
+	GLuint TextureID;	
+
+	SpriteInfo()
+		:Alpha(1.0f)
+	{
+
+	}
 };
 
 class SpriteBatch final : public Singleton<SpriteBatch>

@@ -20,9 +20,7 @@ public:
 		};
 		Node* parant;
 	};
-	//¡ü ¡ú ¡ý ¡û ¨J ¨K ¨L ¨I
-	int dir_x[8] = { 0, 1, 0, -1, 1, 1, -1, -1 };
-	int dir_y[8] = { -1, 0, 1, 0,-1, 1, 1,-1 };
+
 
 	Astar(int width, int height, int** cell) : mWidth(width), mHeight(height) {
 		mCell = cell;

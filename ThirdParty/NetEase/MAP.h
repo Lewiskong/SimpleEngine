@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../../defines.h"
 
@@ -11,30 +11,30 @@ using std::ifstream;
 using std::fstream;
 
 namespace NetEase {
-	// ��ͼ���ļ�ͷ(�λá���2)
+	// µØÍ¼µÄÎÄ¼þÍ·(ÃÎ»Ã¡¢´ó»°2)
 	struct MapHeader
 	{
 		//public:
-		// �ļ�ͷ�ṹ��12�ֽ�
-		uint32		Flag;		//�ļ���־
-		uint32		Width;		//��ͼ��
-		uint32		Height;		//��ͼ��	
+		// ÎÄ¼þÍ·½á¹¹¹²12×Ö½Ú
+		uint32		Flag;		//ÎÄ¼þ±êÖ¾
+		uint32		Width;		//µØÍ¼¿í
+		uint32		Height;		//µØÍ¼¸ß	
 	};
 
-	// ��ͼ�ĵ�Ԫͷ
+	// µØÍ¼µÄµ¥ÔªÍ·
 	struct MapUnitHeader
 	{
 		//public:
-		uint32		Flag;		// ��Ԫ��־
-		uint32		Size;		// ��Ԫ��С
+		uint32		Flag;		// µ¥Ôª±êÖ¾
+		uint32		Size;		// µ¥Ôª´óÐ¡
 	};
 
-	// ��ͼ������
+	// µØÍ¼µÄÊý¾Ý
 	struct MapData
 	{
 		//public:
-		uint32		Size;		// ���ݴ�С
-		uint8		*Data;		// ��������
+		uint32		Size;		// Êý¾Ý´óÐ¡
+		uint8		*Data;		// Êý¾ÝÄÚÈÝ
 	};
 
 	struct MaskHeader
@@ -49,7 +49,7 @@ namespace NetEase {
 		int	StartY;
 		uint32	Width;
 		uint32	Height;
-		uint32	Size;	// mask���ݴ�С
+		uint32	Size;	// maskÊý¾Ý´óÐ¡
 
 	};
 
@@ -61,7 +61,7 @@ namespace NetEase {
 	struct UnKnown
 	{
 		uint32 Offset;
-		uint32 *Data;			//n�ֽ� δ֪��;����СΪ����һ����Ԫ����ֵ��ȥ�ļ�ͷ��С��
+		uint32 *Data;			//n×Ö½Ú Î´ÖªÓÃÍ¾£¬´óÐ¡Îª£ºµÚÒ»¸öµ¥ÔªÒýË÷Öµ¼õÈ¥ÎÄ¼þÍ·´óÐ¡¡£
 	};
 
 	struct MapUnit
@@ -98,7 +98,7 @@ namespace NetEase {
 		uint32 m_ColCount;
 		uint32 m_Pixcels;
 		MapHeader m_Header;
-		uint32* m_UnitIndecies;	//4*n�ֽ�  ��ͼ��Ԫ������ n=��ͼ�Ŀ���/640*2 * ��ͼ�߶�/480*2
+		uint32* m_UnitIndecies;	//4*n×Ö½Ú  µØÍ¼µ¥ÔªµÄÒýË÷ n=µØÍ¼µÄ¿í¶È/640*2 * µØÍ¼¸ß¶È/480*2
 		uint32 m_UnitSize;
 
 		MaskHeader m_MaskHeader;

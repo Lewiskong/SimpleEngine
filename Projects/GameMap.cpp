@@ -8,15 +8,15 @@ GameMap::GameMap(std::string filename)
 {
 	mXyqMap = new NetEase::MAP(filename);
 
-	//地图读取后的宽高
+	
 	mMapWidth = mXyqMap->m_MapWidth;
 	mMapHeight = mXyqMap->m_MapHeight;
 
-	//地图实际宽高
+	
 	mWidth = mXyqMap->m_Width;
 	mHeight = mXyqMap->m_Height;
 
-	//地图的行列数
+	
 	mRow = mXyqMap->m_RowCount;
 	mCol = mXyqMap->m_ColCount;
 	printf("初始化GameMap %d %d ", mRow, mCol);
@@ -55,16 +55,16 @@ GameMap::GameMap(std::string filename)
 		mCell[i] = new int[mCellHeight];
 	}
 
-	int x = 0, y = 0;
+	int x = 0, y = 0 ,p,q;
 	for (int i = 0; i < mRow; i++)
 	{
 		for (int j = 0; j < mCol; j++)
 		{
-			y = 12 * i;	//确定y的开始坐标
-			for (int p = 0; p < 12; p++)
+			y = 12 * i;
+			for (p = 0; p < 12; p++)
 			{
-				x = 16 * j;	//确定x的开始坐标
-				for (int q = 0; q < 16; q++)
+				x = 16 * j;
+				for (q = 0; q < 16; q++)
 				{
 					mCell[x++][y] = (mXyqMap->m_MapUnits)[i*mCol + j].Cell[p * 16 + q];
 				}
@@ -86,7 +86,7 @@ GameMap::GameMap(std::string filename)
 	// }
 	// outfile.close();
 
-	/*初始化障碍图片*/
+	
 	// int width, height;
 	// unsigned char* image = SOIL_load_image("X.png", &width, &height, 0,
 	// 	SOIL_LOAD_RGBA);
@@ -184,23 +184,3 @@ void GameMap::DrawMask(SpriteRenderer* renderer, int offx, int offy)
 			0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	}
 }
-
-
-/*
-int main()
-{
-GameMap gmap("1501.map");
-gmap.Move(252, 60, 38, 16);
-// Heap<Astar::Node*> heap;
-// std::default_random_engine e;
-// for(int i=0;i<100;i++)
-// {
-// 	int x = e()%317;
-// 	Astar::Node* p = gmap.GetAstar()->NewNode(x,x);
-// 	p->key = x;
-// 	heap.add(p);
-// }
-// heap.print();
-// heap.sort();
-}
-*/
