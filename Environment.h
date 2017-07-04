@@ -2,8 +2,12 @@
 
 #include "defines.h"
 
-//#define WORK_DIR "/Users/oceancx/SimpleEngine"
+#ifdef _WIN32
 #define WORK_DIR "F:/Github/SimpleEngine"
+#else
+#define WORK_DIR "/Users/oceancx/SimpleEngine"
+#endif
+
 
 class Environment
 {

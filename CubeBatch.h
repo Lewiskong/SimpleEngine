@@ -3,6 +3,7 @@
 #include "defines.h"
 #include "Singleton.h"
 #include "Shader.h"
+#include <array>
 
 struct CubeInfo
 {
@@ -45,6 +46,6 @@ private:
 
 	GLint modelLoc,viewLoc, projLoc;
 
-	GLfloat vertices3D[180];
-	
+	std::array<GLfloat, 180> vertices3D;
+
 };

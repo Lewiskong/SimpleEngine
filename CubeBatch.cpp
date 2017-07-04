@@ -8,9 +8,7 @@ CubeBatch::CubeBatch()
 	:Singleton<CubeBatch>()
 	, m_CubeQueue()
 	, m_pShader(nullptr)
-{
-
-	int x[] = {
+	, vertices3D({
 		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
 		0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
 		0.5f, 0.5f, -0.5f, 1.0f, 1.0f,
@@ -52,11 +50,9 @@ CubeBatch::CubeBatch()
 		0.5f, 0.5f, 0.5f, 1.0f, 0.0f,
 		-0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
 		-0.5f, 0.5f, -0.5f, 0.0f, 1.0f
-	};
-	for (int i = 0; i < 180; i++)
-	{
-		vertices3D[i] = x[i];
-	}
+	})
+{
+
 }
 
 CubeBatch::~CubeBatch()
@@ -99,7 +95,7 @@ void CubeBatch::Begin()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices3D),vertices3D, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices3D),&vertices3D[0], GL_STATIC_DRAW);
 
     // Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
