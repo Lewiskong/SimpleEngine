@@ -1,11 +1,12 @@
 #pragma once
 
-class Demo
+#include "IUpdateDraw.h"
+class Demo :public IUpdateDraw
 {
 public:
 	Demo();
 	~Demo();
-	void Update();
-	void Draw();
+	void Update() override;
+	void Draw() override;
 	
 };

@@ -1,5 +1,6 @@
 #include "SpriteBatch.h"
 #include "Environment.h"
+#include <array>
 
 SpriteBatch::SpriteBatch()
 :Singleton<SpriteBatch>()
@@ -115,19 +116,20 @@ void SpriteBatch::Begin()
 		mVertices.push_back(alpha);			//alpha
 	}
 	
-
-	std::vector<GLfloat> vertices;
+	
+	/*std::array<GLfloat, mVertices.size()> vertices;
 	for(int i=0;i<mVertices.size();i++)
 	{
 		vertices[i] = mVertices[i];
-	}
+	}*/
 
     // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof( vertices),&vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*mVertices.size(), &mVertices[0], GL_STATIC_DRAW);
 
+	
     // Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);

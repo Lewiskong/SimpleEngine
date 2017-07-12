@@ -1,44 +1,31 @@
 #include "TestSence.h"
-#include "../Engine.h"
-#include "Texture.h"
-#include "SpriteBatch.h"
-#include "CubeBatch.h"
-#include "InputManager.h"
-#include "../Objects/MapObject.h"
 
-
-glm::vec3 cubePositions[] = 
+TestSence::TestSence() 
+	:cubePositions({
+	glm::vec3(0.0f, 0.0f, 0.0f),
+	glm::vec3(2.0f, 5.0f, -15.0f),
+	glm::vec3(-1.5f, -2.2f, -2.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -0.4f, -3.5f),
+	glm::vec3(-1.7f, 3.0f, -7.5f),
+	glm::vec3(1.3f, -2.0f, -2.5f),
+	glm::vec3(1.5f, 2.0f, -2.5f),
+	glm::vec3(1.5f, 0.2f, -1.5f),
+	glm::vec3(-1.3f, 1.0f, -1.5f) })
 {
-	glm::vec3(0.0f, 0.0f, 0.0f), 
-	glm::vec3(2.0f, 5.0f, -15.0f), 
-	glm::vec3(-1.5f, -2.2f, -2.5f),  
-	glm::vec3(-3.8f, -2.0f, -12.3f),  
-	glm::vec3(2.4f, -0.4f, -3.5f),  
-	glm::vec3(-1.7f, 3.0f, -7.5f),  
-	glm::vec3(1.3f, -2.0f, -2.5f),  
-	glm::vec3(1.5f, 2.0f, -2.5f), 
-	glm::vec3(1.5f, 0.2f, -1.5f), 
-	glm::vec3(-1.3f, 1.0f, -1.5f)  
-};
+	
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glEnable(GL_DEPTH_TEST);
 
-Texture* p_Texture;
-int tw,th;
-
-glm::mat4 view;
-glm::mat4 projection = glm::perspective(45.0f, 800.0f/600.0f, 0.1f, 1000.0f);;   
-
-glm::vec3 pos = glm::vec3(0,0,3);
-glm::vec3 front = glm::vec3(0.0f,0.0f,-1.0f);
-glm::vec3 up = glm::vec3(0.0f,1.0f,0.0f);
+	SpriteBatch::GetInstance()->Init();
+	CubeBatch::GetInstance()->Init();
 
 
-MapObject* pMapObject;
-TestSence::TestSence()
-{
+
    // pMapObject = new MapObject("Map");
 	pMapObject = new MapObject();
-
-	p_Texture = new Texture("/Users/oceancx/SimpleEngine/Resource/Assets/bizhi.jpg");
+	
+	p_Texture = new Texture( Environment::GetAbsPath("Resource/Assets/bizhi.jpg"));
 	tw = p_Texture->GetWidth();
 	th = p_Texture->GetHeight();
 }
@@ -113,6 +100,10 @@ void TestSence::Update()
 
 void TestSence::Draw()
 {
+
 	pMapObject->Draw();
+
+	CubeBatch::GetInstance()->Flush();
+	SpriteBatch::GetInstance()->Flush();
 }
 

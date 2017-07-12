@@ -7,10 +7,6 @@ Game::Game(int w,int h,std::string title)
 	mResHeight = h;
 	mTitle = title;
 
-	/*
-	各种初始化 
-	*/
-	
 }
 
 Game::~Game()

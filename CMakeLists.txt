@@ -176,6 +176,7 @@ Shader/SimpleVertexShader.vert
 Shader/SimpleFragmentShader.frag
 Shader/MvpFragmentShader
 Shader/MvpVertexShader
+IUpdateDraw.h
 )
 
 target_link_libraries(${PROJECT_NAME}

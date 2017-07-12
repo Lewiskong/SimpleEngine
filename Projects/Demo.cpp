@@ -48,7 +48,7 @@ Pos dest;
 
 bool bmove = true;
 
-float ScreenWidth =800.0f;
+float ScreenWidth = 800.0f;
 float ScreenHeight =600.0f;
 Texture* p_Texture2;
 
@@ -77,6 +77,8 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 
 Demo::Demo()
 {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	InputManager::GetInstance()->SetMouseButtonCallback(mouse_button_callback);
 
@@ -125,8 +127,6 @@ Demo::Demo()
 
 		actor_state++;
 	}
-
-	
 
 	for(int i=0;i<2;i++)
 	{
