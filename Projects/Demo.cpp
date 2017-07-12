@@ -1,63 +1,10 @@
 #include "Demo.h"
-#include "../Engine.h"
-#include "Texture.h"
-#include "InputManager.h"
-#include "../SpriteRenderer.h"
-#include "../ThirdParty/NetEase/Sprite2.h"
-#include "../ThirdParty/NetEase/WDF.h"
-#include "../ThirdParty/NetEase/WAS.h"
-#include "GameMap.h"
-#include "../Environment.h"
-#include "../ResourceManager.h"
-#include "Config.h"
 
-void ProcessInput();
-void toggleActorState();
-
-// Game-related State data
-SpriteRenderer  *Renderer;
-std::vector<std::vector<Texture*>> mSpriteTextures;
-
-std::vector<Sprite2> mSprite2;
-
-#define PI 3.1415926
-#define DegreeToRadian(d) (d*PI/180.0f)
-#define RadianToDegree(r) (r*180.0f/PI)
-
-
-int cur_frame = 0;
-int frame_count = 0;
-int dir_count = 0;
-GLfloat delta = 0;
-
-int dir = 0;
-//右下，左下，左上，右上，下，左，上，右
-int dirs[8] = { 0,1,2,3,4,5,6,7 };
-
-//↑ → ↓ ← ↗ ↘ ↙ ↖
-
-double src_x , src_y ;
-double cur_x, cur_y;
-double dest_x = src_x, dest_y= src_y;
-GameMap *mGameMap;
-std::list<Pos> mMoveList;
-double step_range_x = 0;
-double step_range_y = 0;
-double move_velocity = 500;
-Pos dest;
-
-bool bmove = true;
-
-float ScreenWidth = 800.0f;
-float ScreenHeight =600.0f;
-Texture* p_Texture2;
-
-int actor_state = 1;
-
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void Demo::OnEvent(int button, int action, int mods) 
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
+		std::cout << " OnEvent : call success!" <<std::endl; 
 		bmove = false;
 		mMoveList.clear();
 		int mapOffsetX = 320 + mSprite2[actor_state].mWidth / 2 - cur_x;
@@ -71,7 +18,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		actor_state = 1;
 		frame_count = mSprite2[actor_state].mFrameSize;
 		cur_frame = 0;
-
 	}
 }
 
@@ -80,7 +26,7 @@ Demo::Demo()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	InputManager::GetInstance()->SetMouseButtonCallback(mouse_button_callback);
+	InputManager::GetInstance()->SetMouseEvent(this);
 
 	std::string vPath =  Environment::GetAbsPath("Shader/sprite.vs");
 	std::string fPath =  Environment::GetAbsPath("Shader/sprite.frag");
@@ -159,7 +105,7 @@ Demo::Demo()
 	cur_y = 220;
 
 }
-void toggleActorState()
+void Demo::toggleActorState()
 {
 	if(actor_state==1)
 	{
@@ -173,14 +119,14 @@ void toggleActorState()
 	frame_count = mSprite2[actor_state].mFrameSize;
 }
 
-double Astar_GetDistance(double sx, double sy, double ex, double ey)
+double Demo::Astar_GetDistance(double sx, double sy, double ex, double ey)
 {
 	double dx = sx - ex;
 	double dy = sy - ey;
 	return sqrt(pow(dx,2) + pow(dy,2));
 }
 
-double Astar_GetAngle(double sx, double sy, double ex, double ey)
+double Demo::Astar_GetAngle(double sx, double sy, double ex, double ey)
 {
 	double dx = ex - sx;
 	double dy = ey - sy;
@@ -217,7 +163,7 @@ double Astar_GetAngle(double sx, double sy, double ex, double ey)
 	return degree;
 }
 
-int Astar_GetDir(double degree) {
+int Demo::Astar_GetDir(double degree) {
   //右下，左下，左上，右上，下，左，上，右
   // 0    1    2    3   4  5   6  7
   //  2 3 0 1       6 7   4 5
@@ -243,10 +189,6 @@ Demo::~Demo()
 
 }
 
-
-int cnt = 0;
-GLfloat delta2=0;
-bool draw_cell = false;
 void Demo::Update()
 {
 	double dt = Engine::GetInstance()->GetDeltaTime();
@@ -310,7 +252,7 @@ void Demo::Update()
 
 }
 
-void ProcessInput()
+void Demo::ProcessInput()
 {
 
 	if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_W))

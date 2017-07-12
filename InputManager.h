@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Singleton.h"
+#include "Event/Event.h"
 
 /*
 管理输入 包括：鼠标移动，滚动 键盘按键等
@@ -22,7 +23,7 @@ public:
 	static void KeyCallbackFunc(GLFWwindow* window, int key, int scancode, int action, int mode);
 	static void ScrollCallbackFunc(GLFWwindow* window, double xoffset, double yoffset);
 	static void MouseCallbackFunc(GLFWwindow* window, double xpos, double ypos);
-	
+ 	static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 	friend Singleton<InputManager>;
 
@@ -31,13 +32,16 @@ public:
     void SetKeyCallback();
     void SetScrollCallback();
     void SetMouseCallback();
-    void SetMouseButtonCallback(MouseButtonCallbackPtr func) { glfwSetMouseButtonCallback(m_pWindow, func); }
+    void SetMouseButtonCallback();
 
     bool IsKeyDown(int keyCode) { return mKeys[keyCode]; }
     bool IsKeyUp(int keyCode) { return mKeys[keyCode]; }
 
     double GetMouseX() { return mMousePos.x; }
     double GetMouseY() { return mMousePos.y; }
+
+    void SetMouseEvent(IMouseEvent* event){ m_IMouseEvent = event; }
+
 
 private:
 	InputManager();
@@ -50,6 +54,8 @@ private:
 	static bool	mFirstMouse;
 
 	static MousePos mMousePos;
+
+	static IMouseEvent * m_IMouseEvent;
 
 };
 

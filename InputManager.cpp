@@ -6,6 +6,17 @@ bool InputManager::mFirstMouse = true;
 
 MousePos InputManager::mMousePos(0,0);
 
+void InputManager::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if(m_IMouseEvent != nullptr)
+    {
+        m_IMouseEvent->OnEvent(button,action,mods);
+    }
+    
+
+}
+
+
 void InputManager::KeyCallbackFunc(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS){
@@ -37,7 +48,10 @@ void InputManager::MouseCallbackFunc(GLFWwindow* window, double xpos, double ypo
     
     mMousePos.x = xpos;
     mMousePos.y = ypos;
+    
 }
+
+IMouseEvent* InputManager::m_IMouseEvent(nullptr);
 
 InputManager::InputManager()
 :Singleton<InputManager>()
@@ -69,6 +83,13 @@ void InputManager::SetMouseCallback()
 	glfwSetCursorPosCallback(m_pWindow, MouseCallbackFunc);
 }
 
+void InputManager::SetMouseButtonCallback()
+{
+    glfwSetMouseButtonCallback(m_pWindow, mouse_button_callback);
+}
+
+
+ 
 
 
 

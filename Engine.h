@@ -2,7 +2,7 @@
 
 #include "defines.h"
 #include "Singleton.h"
-
+#include "IUpdateDraw.h"
 /*
 * 引擎主要负责各种Manger的载入和初始化
 比方说： SenceManager TextureManger  
@@ -20,5 +20,6 @@ public:
 private:
 	Engine();
 	double m_DeltaTime;
+	IUpdateDraw * mSence;
 
 };

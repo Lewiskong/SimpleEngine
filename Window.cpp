@@ -45,7 +45,6 @@ Window::~Window()
 
 GLfloat deltaTime = 0;
 GLfloat lastFrame = 0.0f;
-
 void Window::Show()
 {
     
@@ -81,4 +80,9 @@ void Window::Show()
     glfwTerminate();
 }
 
+
+GLFWwindow* Window::GetGLFWwindow()
+{
+    return p_Window;
+}
 

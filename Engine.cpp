@@ -19,21 +19,16 @@ Engine::Engine()
 }
 
 
-
-
-IUpdateDraw * mSence;
-
 void Engine::Init()
 {
 	
-	mSence = new TestSence();
-	//mSence = new Demo();
-    
+	// mSence = new TestSence();
+	mSence = new Demo();
     InputManager::GetInstance()->SetKeyCallback();
     InputManager::GetInstance()->SetScrollCallback();
     InputManager::GetInstance()->SetMouseCallback();
+    InputManager::GetInstance()->SetMouseButtonCallback();
 
-    
 }
 
 void Engine::Update(double dt)

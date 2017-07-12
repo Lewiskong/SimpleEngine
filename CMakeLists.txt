@@ -172,6 +172,7 @@ Game.h
 Game.cpp
 Engine.h
 Engine.cpp
+Event/Event.h
 Shader/SimpleVertexShader.vert
 Shader/SimpleFragmentShader.frag
 Shader/MvpFragmentShader
