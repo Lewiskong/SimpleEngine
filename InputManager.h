@@ -13,6 +13,12 @@ struct MousePos
 
 typedef void (*MouseButtonCallbackPtr)(GLFWwindow* window, int button, int action, int mods);
 
+class MouseButtonCallback
+{
+public:
+	virtual void OnClick(int button, int action, int mods) = 0;
+};
+
 class InputManager final : public Singleton<InputManager>
 {
 typedef void (*KeyCallbackPtr)(GLFWwindow*,int,int,int,int);
@@ -22,7 +28,8 @@ public:
 	static void KeyCallbackFunc(GLFWwindow* window, int key, int scancode, int action, int mode);
 	static void ScrollCallbackFunc(GLFWwindow* window, double xoffset, double yoffset);
 	static void MouseCallbackFunc(GLFWwindow* window, double xpos, double ypos);
-	
+	static void MouseButtonbackFunc(GLFWwindow* window, int button, int action, int mods);
+
 
 	friend Singleton<InputManager>;
 
@@ -31,13 +38,16 @@ public:
     void SetKeyCallback();
     void SetScrollCallback();
     void SetMouseCallback();
-    void SetMouseButtonCallback(MouseButtonCallbackPtr func) { glfwSetMouseButtonCallback(m_pWindow, func); }
+	void SetMouseButtonCallback();
+	void SetButtonCallback(MouseButtonCallback* callback){ mButtonCallbakc = callback; }
 
     bool IsKeyDown(int keyCode) { return mKeys[keyCode]; }
     bool IsKeyUp(int keyCode) { return mKeys[keyCode]; }
 
     double GetMouseX() { return mMousePos.x; }
     double GetMouseY() { return mMousePos.y; }
+
+	static MouseButtonCallback* mButtonCallbakc;
 
 private:
 	InputManager();
@@ -50,6 +60,6 @@ private:
 	static bool	mFirstMouse;
 
 	static MousePos mMousePos;
-
+	
 };
 

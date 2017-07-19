@@ -10,6 +10,8 @@
 #include "../Environment.h"
 #include "../ResourceManager.h"
 #include "Config.h"
+#include "InputManager.h"
+
 
 void ProcessInput();
 void toggleActorState();
@@ -19,10 +21,6 @@ SpriteRenderer  *Renderer;
 std::vector<std::vector<Texture*>> mSpriteTextures;
 
 std::vector<Sprite2> mSprite2;
-
-#define PI 3.1415926
-#define DegreeToRadian(d) (d*PI/180.0f)
-#define RadianToDegree(r) (r*180.0f/PI)
 
 
 int cur_frame = 0;
@@ -54,6 +52,15 @@ Texture* p_Texture2;
 
 int actor_state = 1;
 
+void Demo::OnClick(int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		std::cout << " clicke ed !!!!!" << std::endl;
+	}
+}
+
+
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
@@ -80,7 +87,7 @@ Demo::Demo()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	InputManager::GetInstance()->SetMouseButtonCallback(mouse_button_callback);
+	InputManager::GetInstance()->SetButtonCallback(this);
 
 	std::string vPath =  Environment::GetAbsPath("Shader/sprite.vs");
 	std::string fPath =  Environment::GetAbsPath("Shader/sprite.frag");

@@ -8,31 +8,29 @@
 
 Engine::~Engine()
 {
-
+	if (mSence != nullptr)
+	{
+		delete mSence;
+		mSence = nullptr;
+	}
 }
 
 
 Engine::Engine()
 : Singleton<Engine>()
 {
-
+	//mSence = new TestSence();
+	mSence = new Demo();
 }
-
-
-
-
-IUpdateDraw * mSence;
 
 void Engine::Init()
 {
 	
-	mSence = new TestSence();
-	//mSence = new Demo();
-    
+	
     InputManager::GetInstance()->SetKeyCallback();
     InputManager::GetInstance()->SetScrollCallback();
     InputManager::GetInstance()->SetMouseCallback();
-
+	InputManager::GetInstance()->SetMouseButtonCallback();
     
 }
 
@@ -45,7 +43,5 @@ void Engine::Update(double dt)
 
 void Engine::Draw()
 { 
-    mSence->Draw();
-
-  
+    mSence->Draw(); 
 }
