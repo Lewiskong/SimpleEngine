@@ -2,8 +2,8 @@
 #include <string>
 #include <list>
 #include "Heap.h"
-#include "mhxy.h"
 #include <map>
+#include "../Pos.h"
 /*
 纯算法实现 不包含输入输出
 */

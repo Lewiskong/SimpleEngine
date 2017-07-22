@@ -14,13 +14,6 @@ public:
 	Sprite2();
 	~Sprite2();
 
-	int mGroupSize;		//方向数
-	int mFrameSize;		//帧数
-	int mWidth;			//宽度
-	int mHeight;		//高度
-	int mKeyX;			//关键帧X
-	int mKeyY;			//关键帧Y
-
 	struct Sequence
 	{
 		int key_x;
@@ -30,6 +23,13 @@ public:
 		uint32 format;
 		uint32* src;
 	};
+
+	int mGroupSize;		//方向数
+	int mFrameSize;		//帧数
+	int mWidth;			//宽度
+	int mHeight;		//高度
+	int mKeyX;			//关键帧X
+	int mKeyY;			//关键帧Y
 
 	Sequence** mFrames;
 	void SaveImage(int index);

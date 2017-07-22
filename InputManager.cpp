@@ -1,21 +1,20 @@
 #include "InputManager.h"
 
-bool InputManager::mKeys[1024] = {0};
+bool InputManager::s_Keys[1024] = {0};
 
-bool InputManager::mFirstMouse = true;
+bool InputManager::s_FirstMouse = true;
 
-MousePos InputManager::mMousePos(0,0);
+MousePos InputManager::s_MousePos(0,0);
+
+IMouseEvent* InputManager::s_IMouseEvent(nullptr);
 
 void InputManager::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    if(m_IMouseEvent != nullptr)
+    if(s_IMouseEvent != nullptr)
     {
-        m_IMouseEvent->OnEvent(button,action,mods);
+        s_IMouseEvent->OnEvent(button,action,mods);
     }
-    
-
 }
-
 
 void InputManager::KeyCallbackFunc(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -24,9 +23,9 @@ void InputManager::KeyCallbackFunc(GLFWwindow* window, int key, int scancode, in
     }
 
     if(action == GLFW_PRESS)
-        mKeys[key] = true;
+        s_Keys[key] = true;
     else if(action == GLFW_RELEASE)
-        mKeys[key] = false;	
+        s_Keys[key] = false;	
 }
 
 void InputManager::ScrollCallbackFunc(GLFWwindow* window, double xoffset, double yoffset)
@@ -36,22 +35,20 @@ void InputManager::ScrollCallbackFunc(GLFWwindow* window, double xoffset, double
 
 void InputManager::MouseCallbackFunc(GLFWwindow* window, double xpos, double ypos)
 {
-    if(mFirstMouse)
+    if(s_FirstMouse)
     {
-        mMousePos.x = xpos;
-        mMousePos.y = ypos;
-        mFirstMouse = false;
+        s_MousePos.x = xpos;
+        s_MousePos.y = ypos;
+        s_FirstMouse = false;
     }
 
-    GLfloat xoffset = xpos - mMousePos.x;
-    GLfloat yoffset = mMousePos.y - ypos;  // Reversed since y-coordinates go from bottom to left
+    GLfloat xoffset = xpos - s_MousePos.x;
+    GLfloat yoffset = s_MousePos.y - ypos;  // Reversed since y-coordinates go from bottom to left
     
-    mMousePos.x = xpos;
-    mMousePos.y = ypos;
+    s_MousePos.x = xpos;
+    s_MousePos.y = ypos;
     
 }
-
-IMouseEvent* InputManager::m_IMouseEvent(nullptr);
 
 InputManager::InputManager()
 :Singleton<InputManager>()

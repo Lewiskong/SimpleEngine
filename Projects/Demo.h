@@ -13,13 +13,9 @@
 #include "../Environment.h"
 #include "../ResourceManager.h"
 #include "Config.h"
+#include "../GMath.h"
 
-#define PI 3.1415926
-#define DegreeToRadian(d) (d*PI/180.0f)
-#define RadianToDegree(r) (r*180.0f/PI)
-
-
-class Demo :public IUpdateDraw, public IMouseEvent
+class Demo : public IUpdateDraw, public IMouseEvent
 {
 public:
 	Demo();
@@ -30,10 +26,7 @@ public:
 
 	void ProcessInput();
 	void toggleActorState();
-	double Astar_GetDistance(double sx, double sy, double ex, double ey);
-	double Astar_GetAngle(double sx, double sy, double ex, double ey);
-	int Astar_GetDir(double degree);
-
+	
 	// Game-related State data
 	SpriteRenderer  *Renderer;
 	std::vector<std::vector<Texture*>> mSpriteTextures;
@@ -49,7 +42,6 @@ public:
 	int dirs[8] = { 0,1,2,3,4,5,6,7 };
 
 	//↑ → ↓ ← ↗ ↘ ↙ ↖
-
 	double src_x , src_y ;
 	double cur_x, cur_y;
 	double dest_x = src_x, dest_y= src_y;

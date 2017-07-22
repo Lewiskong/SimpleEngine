@@ -12,13 +12,8 @@ struct MousePos
 	MousePos(double x,double y) { this->x = x ; this->y = y ;}
 };
 
-typedef void (*MouseButtonCallbackPtr)(GLFWwindow* window, int button, int action, int mods);
-
 class InputManager final : public Singleton<InputManager>
 {
-typedef void (*KeyCallbackPtr)(GLFWwindow*,int,int,int,int);
-
-
 public:
 	static void KeyCallbackFunc(GLFWwindow* window, int key, int scancode, int action, int mode);
 	static void ScrollCallbackFunc(GLFWwindow* window, double xoffset, double yoffset);
@@ -34,13 +29,13 @@ public:
     void SetMouseCallback();
     void SetMouseButtonCallback();
 
-    bool IsKeyDown(int keyCode) { return mKeys[keyCode]; }
-    bool IsKeyUp(int keyCode) { return mKeys[keyCode]; }
+    bool IsKeyDown(int keyCode) { return s_Keys[keyCode]; }
+    bool IsKeyUp(int keyCode) { return s_Keys[keyCode]; }
 
-    double GetMouseX() { return mMousePos.x; }
-    double GetMouseY() { return mMousePos.y; }
+    double GetMouseX() { return s_MousePos.x; }
+    double GetMouseY() { return s_MousePos.y; }
 
-    void SetMouseEvent(IMouseEvent* event){ m_IMouseEvent = event; }
+    void SetMouseEvent(IMouseEvent* event){ s_IMouseEvent = event; }
 
 
 private:
@@ -49,13 +44,13 @@ private:
 
 	GLFWwindow* m_pWindow;
 
-	static bool	mKeys[1024];
+	static bool	s_Keys[1024];
 
-	static bool	mFirstMouse;
+	static bool	s_FirstMouse;
 
-	static MousePos mMousePos;
+	static MousePos s_MousePos;
 
-	static IMouseEvent * m_IMouseEvent;
+	static IMouseEvent * s_IMouseEvent;
 
 };
 

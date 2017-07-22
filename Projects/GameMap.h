@@ -6,11 +6,12 @@
 #include "Astar.h"
 
 #include <list>
-#include "mhxy.h"
 #include "../image.h"
+#include "../Pos.h"
 /*
 游戏地图类的封装
 */
+
 class GameMap
 {
 public:

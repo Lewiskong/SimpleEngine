@@ -178,6 +178,11 @@ Shader/SimpleFragmentShader.frag
 Shader/MvpFragmentShader
 Shader/MvpVertexShader
 IUpdateDraw.h
+GMath.h
+GMath.cpp
+Pos.h
+FrameAnimation.h
+FrameAnimation.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
