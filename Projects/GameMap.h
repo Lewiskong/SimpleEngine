@@ -26,6 +26,8 @@ public:
 	void Draw(SpriteRenderer* renderer, int offx, int offy);
 	void DrawMask(SpriteRenderer* renderer, int offx, int offy);
 	void DrawCell(SpriteRenderer* renderer, int cur_x, int cur_y);
+	int GetWidth(){return mWidth;}
+	int GetHeight(){return mHeight;}
 private:
 	std::vector<Texture *> mMapTiles;
 	std::vector<Texture *> mMaskTiles;

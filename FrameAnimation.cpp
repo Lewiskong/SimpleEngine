@@ -80,15 +80,14 @@ void FrameAnimation::SetVisible(bool visible)
 void FrameAnimation::Draw(SpriteRenderer* renderer,int posX ,int posY)
 {
 
-	if (m_bVisible)
-	{
+	
 		m_PosX = posX;
 		m_PosY = posY;
 		Texture* t = m_Textures[m_CurrentFrame];
 		renderer->DrawSprite(t,
 			glm::vec2(m_PosX, m_PosY),
 			glm::vec2(t->GetWidth(), t->GetHeight()), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-	}
+	
 	
 	
 }

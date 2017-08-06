@@ -73,4 +73,9 @@ int GMath::Astar_GetDir(double degree) {
 	}
 }
 
-
+int GMath::Clamp(int value,int min,int max)
+{
+	if(value < min )value=min;
+	if(value>max)value=max;
+	return value;
+}

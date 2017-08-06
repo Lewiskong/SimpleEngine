@@ -18,18 +18,20 @@ void Demo::OnEvent(int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
 		std::cout << " OnEvent : call success!" << std::endl;
-		
 		mMoveList.clear();
-		int mapOffsetX = ScreenWidth / 2 - cur_x - 10;
-		int mapOffsetY = ScreenHeight / 2 - cur_y + m_Anims[m_State][ANIM_CHARACTER]->GetHeight() / 2 - 20;
 
+		int mapOffsetX = ScreenWidth / 2 - cur_x;
+		int mapOffsetY = ScreenHeight / 2 - cur_y;
+		
+		mapOffsetX = GMath::Clamp(mapOffsetX,-mGameMap->GetWidth() + ScreenWidth,0);
+		mapOffsetY = GMath::Clamp(mapOffsetY,-mGameMap->GetHeight() + ScreenHeight,0);
 
 		double mouse_x = InputManager::GetInstance()->GetMouseX();
 		double mouse_y = InputManager::GetInstance()->GetMouseY();
 		mMoveList = mGameMap->Move(cur_x / 20, cur_y / 20, (-mapOffsetX + mouse_x) / 20,
 			(-mapOffsetY + mouse_y) / 20);
 
-		Logger::Print("dest box X:%lf  Y:%lf  posX:%lf posY:%lf\n", (-mapOffsetX + mouse_x) / 20, (-mapOffsetY + mouse_y) / 20, (-mapOffsetX + mouse_x), (-mapOffsetY + mouse_y));
+		Logger::Print("box X:%lf  Y:%lf \n", (-mapOffsetX + mouse_x) / 20, (-mapOffsetY + mouse_y) / 20);
 		bmove = true;
 		//SetState(STATE_MOVE);
 		m_State = STATE_MOVE;
@@ -96,10 +98,10 @@ Demo::Demo()
 			m_Anims[STATE_MOVE][ANIM_WEAPON] = new FrameAnimation(sprite2);
 	}
 
-	cur_x = 2578;
-	cur_y = 315;
+	cur_x = 5000;
+	cur_y = 400;
 
-	mMoveList = mGameMap->Move(cur_x/20, cur_y/20, cur_x/20+1, cur_y/20+1);
+	mMoveList = mGameMap->Move(cur_x/20, cur_y/20, cur_x/20, cur_y/20);
 
 	dir = (int) FrameAnimation::Dir::S_E;
 	for (int i = 0; i < 2; i++)
@@ -162,9 +164,12 @@ void Demo::Update()
 				m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
 				m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
 			}
+			Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
 		}
 		
 	}
+
+
 
 	m_Anims[m_State][ANIM_CHARACTER]->OnUpdate(dt);
 	m_Anims[m_State][ANIM_WEAPON]->OnUpdate(dt);
@@ -201,28 +206,32 @@ void Demo::ProcessInput()
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_W))
 	{
 		cur_y -= amout;
+		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_A))
 	{
 		cur_x -= amout;
+		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_S))
 	{
 		cur_y += amout;
+		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_D))
 	{
 		cur_x += amout;
+		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
 	}
 
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_3))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_3) || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_3))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S_E);
 		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
@@ -230,14 +239,14 @@ void Demo::ProcessInput()
 	}
 
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_1))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_1)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_1))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S_W);
 		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
 		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
 	}
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_7))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_7)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_7))
 	{
 
 		dir = static_cast<int>(FrameAnimation::Dir::N_W);
@@ -246,7 +255,7 @@ void Demo::ProcessInput()
 	}
 
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_9))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_9)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_9))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::N_E);
 		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
@@ -254,7 +263,7 @@ void Demo::ProcessInput()
 	}
 
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_2))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_2)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_2))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S);
 		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
@@ -262,14 +271,14 @@ void Demo::ProcessInput()
 	}
 
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_4))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_4)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_4))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::W);
 		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
 		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
 	}
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_8))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_8)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_8))
 	{
 
 		dir = static_cast<int>(FrameAnimation::Dir::N);
@@ -278,7 +287,7 @@ void Demo::ProcessInput()
 	}
 
 
-	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_6))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_6)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_6))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::E);
 		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
@@ -310,25 +319,39 @@ void Demo::ProcessInput()
 
 void Demo::Draw()
 {
-	int mapOffsetX = ScreenWidth / 2 - cur_x - 10;
-	int mapOffsetY = ScreenHeight / 2 - cur_y + m_Anims[m_State][ANIM_CHARACTER]->GetHeight() / 2 - 20;
-	mGameMap->Draw(Renderer, mapOffsetX, mapOffsetY);
+	int halfScreenWidth = ScreenWidth /2;
+	int halfScreenHeight = ScreenHeight/2;
+
+	int mapOffsetX = halfScreenWidth - cur_x;
+	int mapOffsetY = halfScreenHeight - cur_y;
+
+	mapOffsetX = GMath::Clamp(mapOffsetX,-mGameMap->GetWidth() + ScreenWidth ,0);
+	mapOffsetY = GMath::Clamp(mapOffsetY,-mGameMap->GetHeight() + ScreenHeight,0);
+
+	mGameMap->Draw(Renderer, mapOffsetX , mapOffsetY);
 	
-	Renderer->DrawSprite(m_pBlockTexture,
-		glm::vec2(mapOffsetX, mapOffsetY),
-		glm::vec2(20, 20), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	int maxMapOffsetX = mGameMap->GetWidth() - halfScreenWidth ;
+	int maxMapOffsetY = mGameMap->GetHeight()  - halfScreenHeight;
 
+	int px = cur_x <  halfScreenWidth ? cur_x : 
+	(cur_x > maxMapOffsetX ? 
+		(ScreenWidth- ( mGameMap->GetWidth() - cur_x) ) : halfScreenWidth );
+	int py = cur_y <  halfScreenHeight ? cur_y : 
+	(cur_y > maxMapOffsetY ?
+		(ScreenHeight- ( mGameMap->GetHeight() - cur_y)) : halfScreenHeight );
+	
+	px = px - m_Anims[m_State][ANIM_CHARACTER]->GetWidth()/2 + 10;
+	py = py - m_Anims[m_State][ANIM_CHARACTER]->GetHeight() + 20; 
 
-	int px = ScreenWidth / 2 - m_Anims[m_State][ANIM_CHARACTER]->GetWidth() / 2;
-	int py = ScreenHeight / 2 - m_Anims[m_State][ANIM_CHARACTER]->GetHeight() / 2;
-	m_Anims[m_State][ANIM_CHARACTER]->Draw(Renderer, px, py);
+	m_Anims[m_State][ANIM_CHARACTER]->Draw(Renderer,px,py);
 
 	int px2 = px - (m_Anims[m_State][ANIM_WEAPON]->GetKeyX() - m_Anims[m_State][ANIM_CHARACTER]->GetKeyX());
 	int py2 = py - (m_Anims[m_State][ANIM_WEAPON]->GetKeyY() - m_Anims[m_State][ANIM_CHARACTER]->GetKeyY());
 	m_Anims[m_State][ANIM_WEAPON]->Draw(Renderer, px2, py2);
 	
-	
 	mGameMap->DrawMask(Renderer, mapOffsetX, mapOffsetY);
+
+//		mGameMap->DrawMask(Renderer, mapOffsetX, mapOffsetY);
 
 
 	//Logger::Print("%lf %lf\n", cur_x, cur_y);

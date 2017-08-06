@@ -10,4 +10,5 @@ public:
 	static double Astar_GetDistance(double sx, double sy, double ex, double ey);
 	static double Astar_GetAngle(double sx, double sy, double ex, double ey);
 	static int Astar_GetDir(double degree);
+	static int Clamp(int value,int min,int max);
 };
