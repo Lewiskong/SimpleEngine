@@ -1,25 +1,39 @@
 #include "Demo.h"
 
 #include "FrameAnimation.h"
+#include "Logger.h"
 
+const int Demo::STATE_MOVE = 1;
+const int Demo::STATE_STAND = 0;
+const int Demo::ANIM_CHARACTER = 0;
+const int Demo::ANIM_WEAPON = 1;
+
+const int CHARACTOR_BLOCK_OFFSET_X=0;
+const int CHARACTOR_BLOCK_OFFSET_Y=10;
+
+bool changeState = false;
+double ddt = 0;
 void Demo::OnEvent(int button, int action, int mods) 
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
 	{
-		std::cout << " OnEvent : call success!" <<std::endl; 
-		bmove = false;
+		std::cout << " OnEvent : call success!" << std::endl;
+		
 		mMoveList.clear();
-		int mapOffsetX = 320 + mSprite2[actor_state].mWidth / 2 - cur_x;
-		int mapOffsetY = 240 + mSprite2[actor_state].mHeight / 2 - cur_y;
+		int mapOffsetX = ScreenWidth / 2 - cur_x - 10;
+		int mapOffsetY = ScreenHeight / 2 - cur_y + m_Anims[m_State][ANIM_CHARACTER]->GetHeight() / 2 - 20;
+
+
 		double mouse_x = InputManager::GetInstance()->GetMouseX();
 		double mouse_y = InputManager::GetInstance()->GetMouseY();
-		mMoveList = mGameMap->Move(cur_x/20, cur_y/20, (-mapOffsetX+mouse_x)/20,
-			(-mapOffsetY + mouse_y)/20);
+		mMoveList = mGameMap->Move(cur_x / 20, cur_y / 20, (-mapOffsetX + mouse_x) / 20,
+			(-mapOffsetY + mouse_y) / 20);
+
+		Logger::Print("dest box X:%lf  Y:%lf  posX:%lf posY:%lf\n", (-mapOffsetX + mouse_x) / 20, (-mapOffsetY + mouse_y) / 20, (-mapOffsetX + mouse_x), (-mapOffsetY + mouse_y));
+		bmove = true;
+		//SetState(STATE_MOVE);
+		m_State = STATE_MOVE;
 		
-		bmove=true;
-		actor_state = 1;
-		frame_count = mSprite2[actor_state].mFrameSize;
-		cur_frame = 0;
 	}
 }
 
@@ -54,71 +68,46 @@ Demo::Demo()
 	std::string path = config.GetMapPath(config.mDict["map"][0]);
 	mGameMap = new GameMap(path);
 
-	actor_state = 0;
-
-	for(int i=0;i<2;i++)
-	{
-		int id=0;std::string s = config.mDict["shape.wdf"][i];sscanf(s.c_str(),"%x",&id);
-		NetEase::WDF wdf(config.GetWdfPath("shape.wdf"));
-		
-		std::vector<Texture*> tSprit;
-		mSprite2.push_back ( wdf.LoadSprite(id) );
-
-		int totalSize = mSprite2[actor_state].mFrameSize*mSprite2[actor_state].mGroupSize;
-		for (int i = 0; i< totalSize ; i++) {
-			int gpos = i / mSprite2[actor_state].mFrameSize;
-			int cpos = i%  mSprite2[actor_state].mFrameSize;
-
-			tSprit.push_back(new Texture(mSprite2[actor_state].mWidth,mSprite2[actor_state].mHeight, true, (uint8*)&mSprite2[actor_state].mFrames[gpos][cpos].src[0] ) );
-		}
-		mSpriteTextures.push_back(tSprit);
-
-		actor_state++;
-	}
-
-	for(int i=0;i<2;i++)
-	{
-		int id=0;std::string s = config.mDict["shape.wd3"][i];sscanf(s.c_str(),"%x",&id);
-		NetEase::WDF wdf(config.GetWdfPath("shape.wd3"));
-
-		mSprite2.push_back (wdf.LoadSprite(id) );
-		// mSprite2[actor_state] = wdf.LoadSprite(id);
-		std::vector<Texture*> tSprit;
-		int totalSize = mSprite2[actor_state].mFrameSize*mSprite2[actor_state].mGroupSize;
-		for (int i = 0; i< totalSize ; i++) {
-			int gpos = i / mSprite2[actor_state].mFrameSize;
-			int cpos = i%  mSprite2[actor_state].mFrameSize;
-
-			tSprit.push_back( new Texture(mSprite2[actor_state].mWidth,mSprite2[actor_state].mHeight, true, (uint8*)&mSprite2[actor_state].mFrames[gpos][cpos].src[0] ) );
-		}
-		mSpriteTextures.push_back(tSprit);
-
-		actor_state++;
-	}
 	
-	actor_state = 1;
-	dir_count = mSprite2[actor_state].mGroupSize;
-	frame_count = mSprite2[actor_state].mFrameSize;
+	auto blockPath = Environment::GetAbsPath("Resource/Assets/wall.jpg");
+	m_pBlockTexture = new Texture(blockPath);
 
-
- // mMoveList = mGameMap->Move(252, 60, 38, 16);
-
-	cur_x = 1150;
-	cur_y = 220;
-
-}
-void Demo::toggleActorState()
-{
-	if(actor_state==1)
+	for (int i = 0; i < 2; i++)
 	{
-		actor_state = 0;
+		int id = 0; std::string s = config.mDict["shape.wdf"][i]; sscanf(s.c_str(), "%x", &id);
+		NetEase::WDF wdf(config.GetWdfPath("shape.wdf"));
+		Sprite2 sprite2=  wdf.LoadSprite(id);
+
+		if (i == 0)
+			m_Anims[STATE_STAND][ANIM_CHARACTER]= new FrameAnimation(sprite2);
+		if (i == 1)
+			m_Anims[STATE_MOVE][ANIM_CHARACTER] = new FrameAnimation(sprite2);
+		
 	}
-	else
+
+	for (int i = 0; i < 2; i++)
 	{
-		actor_state=1;
+		int id = 0; std::string s = config.mDict["shape.wd3"][i]; sscanf(s.c_str(), "%x", &id);
+		NetEase::WDF wdf(config.GetWdfPath("shape.wd3"));
+		Sprite2 sprite2 = wdf.LoadSprite(id);
+		if (i == 0)
+			m_Anims[STATE_STAND][ANIM_WEAPON] = new FrameAnimation(sprite2);
+		if (i == 1)
+			m_Anims[STATE_MOVE][ANIM_WEAPON] = new FrameAnimation(sprite2);
 	}
-	dir_count = mSprite2[actor_state].mGroupSize;
-	frame_count = mSprite2[actor_state].mFrameSize;
+
+	cur_x = 2578;
+	cur_y = 315;
+
+	mMoveList = mGameMap->Move(cur_x/20, cur_y/20, cur_x/20+1, cur_y/20+1);
+
+	dir = (int) FrameAnimation::Dir::S_E;
+	for (int i = 0; i < 2; i++)
+		for (int j = 0; j < 2; j++)
+		{
+			m_Anims[i][j]->Reset(dir );
+		}
+
 }
 
 Demo::~Demo()
@@ -128,23 +117,12 @@ Demo::~Demo()
 
 void Demo::Update()
 {
-	double dt = Engine::GetInstance()->GetDeltaTime();
+	double dt = Engine::GetInstance()->GetDeltaTime(); 
+	
 	delta += dt;
-	delta2 += dt;
-	draw_cell = false;
-	if (delta2 >= 4 * dt) {
-		delta2 = 0;
-		draw_cell = true;
-		cur_frame++;
-		if (cur_frame >= frame_count) {
-			cur_frame = 0;
-
-		}
-	}
 	if (delta >= dt) {
-		cnt++;
 		delta = 0;
-		if (bmove) {
+		if (bmove){
 			if (!mMoveList.empty())
 			{
 				double local_velocity = move_velocity*dt;
@@ -152,17 +130,21 @@ void Demo::Update()
 				dest.x = d.x * 20 + 10;
 				dest.y = d.y * 20 + 10;
 
-				if (GMath::Astar_GetDistance(cur_x, cur_y, dest.x, dest.y) > local_velocity ) {
+				if (GMath::Astar_GetDistance(cur_x, cur_y, dest.x, dest.y) > local_velocity) {
 					double degree = GMath::Astar_GetAngle(cur_x, cur_y, dest.x, dest.y);
 
 					dir = GMath::Astar_GetDir(degree);
 
+					Logger::Print("degree:%lf dir:%d \n", degree, dir);
+
 					step_range_x = cos(DegreeToRadian(degree));
 					step_range_y = sin(DegreeToRadian(degree));
 
-					cur_x += step_range_x * local_velocity;  
+					cur_x += step_range_x * local_velocity;
 					cur_y += step_range_y * local_velocity;
 
+					m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+					m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
 				}
 				else {
 					Pos d = mMoveList.front();
@@ -172,85 +154,186 @@ void Demo::Update()
 				}
 
 			}
-			else {
+			else
+			{
 				bmove = false;
-				actor_state=0;
-				frame_count = mSprite2[actor_state].mFrameSize;
-				cur_frame = 0;
-				
+			//	SetState(STATE_STAND);
+				m_State = STATE_STAND;
+				m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+				m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
 			}
 		}
-		else {
-
-		}
+		
 	}
+
+	m_Anims[m_State][ANIM_CHARACTER]->OnUpdate(dt);
+	m_Anims[m_State][ANIM_WEAPON]->OnUpdate(dt);
 
 	ProcessInput();
 
+	if (changeState)
+		ddt += dt;
+
+	if (ddt >= 20 * dt && changeState)
+	{
+		changeState = false;
+		ddt = 0;
+	}
+}
+
+
+void Demo::SetState(int state)
+{
+	if (!changeState)
+	{
+		changeState = true;
+
+		m_State = state;
+		m_Anims[m_State][ANIM_CHARACTER]->Reset(dir);
+		m_Anims[m_State][ANIM_WEAPON]->Reset(dir);
+		
+	}
 }
 
 void Demo::ProcessInput()
 {
-
-	if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_W))
+	int amout = 1;
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_W))
 	{
-		cur_y -= 3;
+		cur_y -= amout;
 	}
 
 
-	if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_A))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_A))
 	{
-		cur_x -= 3;
+		cur_x -= amout;
 	}
 
 
-	if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_S))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_S))
 	{
-		cur_y += 3;
+		cur_y += amout;
 	}
 
 
-	if(InputManager::GetInstance()->IsKeyDown(GLFW_KEY_D))
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_D))
 	{
-		cur_x += 3;
+		cur_x += amout;
+	}
+
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_3))
+	{
+		dir = static_cast<int>(FrameAnimation::Dir::S_E);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_1))
+	{
+		dir = static_cast<int>(FrameAnimation::Dir::S_W);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_7))
+	{
+
+		dir = static_cast<int>(FrameAnimation::Dir::N_W);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_9))
+	{
+		dir = static_cast<int>(FrameAnimation::Dir::N_E);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_2))
+	{
+		dir = static_cast<int>(FrameAnimation::Dir::S);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_4))
+	{
+		dir = static_cast<int>(FrameAnimation::Dir::W);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_8))
+	{
+
+		dir = static_cast<int>(FrameAnimation::Dir::N);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_6))
+	{
+		dir = static_cast<int>(FrameAnimation::Dir::E);
+		m_Anims[m_State][ANIM_CHARACTER]->SetCurrentGroup(dir);
+		m_Anims[m_State][ANIM_WEAPON]->SetCurrentGroup(dir);
+	}
+
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_5) && !changeState)
+	{
+		changeState = true;
+		if (m_State == STATE_MOVE)
+		{
+			m_State = STATE_STAND;
+		}
+		else
+		{
+			m_State = STATE_MOVE;
+		}
+
+		m_Anims[m_State][ANIM_CHARACTER]->Reset(dir);
+		m_Anims[m_State][ANIM_WEAPON]->Reset(dir);
+
+		int cnt1= m_Anims[m_State][ANIM_CHARACTER]->GetGroupFrameCount();
+		int cnt2= m_Anims[m_State][ANIM_WEAPON]->GetGroupFrameCount();
+		Logger::Print("%d %d\n", cnt1, cnt2);
+
 	}
 
 }
 
 void Demo::Draw()
 {
-	int mapOffsetX = 320 + mSprite2[actor_state].mWidth / 2 - cur_x;
-	int mapOffsetY =  240 + mSprite2[actor_state].mHeight / 2 - cur_y;
-	mGameMap->Draw(Renderer,mapOffsetX,mapOffsetY);
+	int mapOffsetX = ScreenWidth / 2 - cur_x - 10;
+	int mapOffsetY = ScreenHeight / 2 - cur_y + m_Anims[m_State][ANIM_CHARACTER]->GetHeight() / 2 - 20;
+	mGameMap->Draw(Renderer, mapOffsetX, mapOffsetY);
+	
+	Renderer->DrawSprite(m_pBlockTexture,
+		glm::vec2(mapOffsetX, mapOffsetY),
+		glm::vec2(20, 20), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
-	int px =ScreenWidth/2 - mSprite2[actor_state].mWidth/2 ;
-	int py =ScreenHeight/2 - mSprite2[actor_state].mHeight/2;
 
+	int px = ScreenWidth / 2 - m_Anims[m_State][ANIM_CHARACTER]->GetWidth() / 2;
+	int py = ScreenHeight / 2 - m_Anims[m_State][ANIM_CHARACTER]->GetHeight() / 2;
+	m_Anims[m_State][ANIM_CHARACTER]->Draw(Renderer, px, py);
 
-	int gpos = cur_frame / frame_count;
-	int cpos = cur_frame%frame_count;
-	Sprite2::Sequence& frame1 = mSprite2[actor_state].mFrames[gpos][cpos];
-	Sprite2::Sequence& frame2 = mSprite2[actor_state+2].mFrames[gpos][cpos];
-
-	Renderer->DrawSprite(mSpriteTextures[actor_state][cur_frame + dir*frame_count],
-		glm::vec2(px, py),
-		glm::vec2(mSprite2[actor_state].mWidth, mSprite2[actor_state].mHeight), 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-
-	int px2 = px - (mSprite2[actor_state+2].mKeyX - mSprite2[actor_state].mKeyX);  
-	int py2 = py - (mSprite2[actor_state+2].mKeyY - mSprite2[actor_state].mKeyY);
-
-	Renderer->DrawSprite(mSpriteTextures[actor_state+2][cur_frame + dir*frame_count],
-		glm::vec2(px2, py2),
-		glm::vec2(mSprite2[actor_state+2].mWidth, mSprite2[actor_state+2].mHeight),
-		0.0f, 
-		glm::vec3(1.0f, 1.0f, 1.0f));
-
-	mapOffsetX = 320 + mSprite2[actor_state].mWidth / 2 - cur_x;
-	mapOffsetY =  240 + mSprite2[actor_state].mHeight / 2 - cur_y;
+	int px2 = px - (m_Anims[m_State][ANIM_WEAPON]->GetKeyX() - m_Anims[m_State][ANIM_CHARACTER]->GetKeyX());
+	int py2 = py - (m_Anims[m_State][ANIM_WEAPON]->GetKeyY() - m_Anims[m_State][ANIM_CHARACTER]->GetKeyY());
+	m_Anims[m_State][ANIM_WEAPON]->Draw(Renderer, px2, py2);
+	
+	
 	mGameMap->DrawMask(Renderer, mapOffsetX, mapOffsetY);
 
+
+	//Logger::Print("%lf %lf\n", cur_x, cur_y);
+	
+
   //mGameMap->DrawCell(Renderer, mapOffsetX, mapOffsetY);
-
-
 }
 

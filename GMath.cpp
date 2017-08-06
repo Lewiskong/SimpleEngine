@@ -1,6 +1,6 @@
 #include "GMath.h"
 #include <cmath>
-
+#include "Logger.h"
 double GMath::Astar_GetDistance(double sx, double sy, double ex, double ey)
 {
 	double dx = sx - ex;
@@ -10,9 +10,18 @@ double GMath::Astar_GetDistance(double sx, double sy, double ex, double ey)
 
 double GMath::Astar_GetAngle(double sx, double sy, double ex, double ey)
 {
+	Logger::Print("Astar_GetAngle: sx=%lf sy=%lf ex=%lf ey=%lf\n", sx, sy, ex, ey);
 	double dx = ex - sx;
 	double dy = ey - sy;
 	
+	if (fabs(dx) <= 0.0001)
+	{
+		if (dy < 0)
+			return 270;
+		else
+			return 90;
+	}
+
 	double angle;
 	double degree;
 
@@ -51,7 +60,7 @@ int GMath::Astar_GetDir(double degree) {
   //  2 3 0 1       6 7   4 5
   //int innerDirs[8] = { 7,3,6,2,5,1,4,0 };
 	int innerDirs[8] = { 7,0,4,1,5,2,6,3};
-	if (360 - 22.5 <= degree || degree < 22.5) {
+	if ((360 - 22.5 <= degree&&degree<360) || (degree>=0&& degree < 22.5)) {
 		return innerDirs[0];
 	}
 	else {

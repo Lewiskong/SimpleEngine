@@ -15,9 +15,21 @@
 #include "Config.h"
 #include "../GMath.h"
 
+#include "FrameAnimation.h"
+
+
+
 class Demo : public IUpdateDraw, public IMouseEvent
 {
 public:
+
+	static const int STATE_MOVE;
+	static const int STATE_STAND;
+	static const int ANIM_CHARACTER;
+	static const int ANIM_WEAPON;
+	static const int CHARACTOR_BLOCK_OFFSET_X;
+	static const int CHARACTOR_BLOCK_OFFSET_Y;
+
 	Demo();
 	~Demo();
 	void Update() override;
@@ -25,24 +37,19 @@ public:
 	void OnEvent(int button, int action, int mods) override;
 
 	void ProcessInput();
-	void toggleActorState();
+	void SetState(int state);
+	
 	
 	// Game-related State data
 	SpriteRenderer  *Renderer;
-	std::vector<std::vector<Texture*>> mSpriteTextures;
-
-	std::vector<Sprite2> mSprite2;
-
-
-	int dir_count = 0;
+	
 	GLfloat delta = 0;
 
 	int dir = 0;
-	//右下，左下，左上，右上，下，左，上，右
-	int dirs[8] = { 0,1,2,3,4,5,6,7 };
+	
+	int m_State = STATE_STAND;
 
-	//↑ → ↓ ← ↗ ↘ ↙ ↖
-	double src_x , src_y ;
+	double src_x = 0 , src_y = 0 ;
 	double cur_x, cur_y;
 	double dest_x = src_x, dest_y= src_y;
 
@@ -54,7 +61,7 @@ public:
 
 	float ScreenWidth = 800.0f;
 	float ScreenHeight = 600.0f;
-	Texture* p_Texture2;
+	Texture* m_pBlockTexture;
 
 
 	int actor_state = 1;
@@ -72,4 +79,8 @@ public:
 	GLfloat delta2=0;
 	bool draw_cell = false;
 
+
+	FrameAnimation* m_Anims[2][2];
 };
+
+

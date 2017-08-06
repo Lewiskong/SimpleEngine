@@ -18,6 +18,7 @@ public:
 			int F;
 			int key;
 		};
+		int dir;
 		Node* parant;
 	};
 

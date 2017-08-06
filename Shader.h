@@ -31,4 +31,4 @@ private:
 	GLuint m_FragmentShader;
 	GLuint m_GeometryShader;
 
-};
+}; 
