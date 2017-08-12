@@ -24,6 +24,13 @@
 		./SimpleEngine
 
 
+### Windows编译
+
+用CMake生成VisualStudio项目文件，打开VS编译即可，同样需要设置Environment.h的WORK_DIR
+
+### TODO
+
+在线聊天~ （progress：0.01%）
 
 
 ### 截图
@@ -59,6 +66,10 @@
 		cmake ..
 		make -j8
 		./SimpleEngine
+
+### Windows Build
+
+Use CMake to generate Visual Studio Project file, Open it by VS and build.
 
 ### ScreenShots
 
