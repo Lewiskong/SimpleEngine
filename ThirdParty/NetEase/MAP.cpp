@@ -120,13 +120,13 @@ namespace NetEase {
 
 	int DecompressMask(void* in, void* out)
 	{
-		register BYTE *op;
-		register  BYTE *ip;
+		register uint8 *op;
+		register  uint8 *ip;
 		register unsigned t;
-		register  BYTE *m_pos;
+		register  uint8 *m_pos;
 
-		op = (BYTE *)out;
-		ip = (BYTE *)in;
+		op = (uint8 *)out;
+		ip = (uint8 *)in;
 
 		if (*ip > 17) {
 			t = *ip++ - 17;
@@ -258,7 +258,7 @@ namespace NetEase {
 
 	eof_found:
 		//   if (ip != ip_end) return -1;
-		return (op - (BYTE*)out);
+		return (op - (uint8*)out);
 	}
 	// 地图的JPEG数据处理器
 	uint8* MAP::MapHandler(uint8* Buffer, uint32 inSize, uint32* outSize)
@@ -581,7 +581,7 @@ namespace NetEase {
 					{
 
 						int mask_index = (h * align_width + w) * 2;		// 单位:位
-						BYTE mask_value = pMaskDataDec[mask_index / 8];	// 定位到字节
+						uint8 mask_value = pMaskDataDec[mask_index / 8];	// 定位到字节
 						mask_value = (mask_value >> (mask_index % 8));	// 定位到位
 						if ((mask_value & 3) == 3) {
 							int bmpIndex_y = (maskInfo.StartY+h)*m_MapWidth * 3;

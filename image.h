@@ -7,48 +7,47 @@
 //
 #pragma once
 
-typedef unsigned  short WORD;
-typedef unsigned  int DWORD;
-#pragma pack(2)
-typedef struct tagBITMAPFILEHEADER{
-    WORD bfType;
-    DWORD bfSize;
-    WORD bfReserved1;
-    WORD bfReserved2;
-    DWORD bfOffBits;
-}BITMAPFILEHEADER;
 
-typedef struct tagBITMAPINFOHEADER{
-    DWORD biSize;
+#pragma pack(2)
+typedef struct tagBITMAP_FILEHEADER{
+    uint16 bfType;
+    uint32 bfSize;
+    uint16 bfReser;
+    uint16 bfReserv;
+	uint32 bfOffBits;
+}BITMAP_FILEHEADER;
+
+typedef struct tagBITMAP_INFOHEADER{
+    uint32 biSize;
     int biWidth;
     int biHeight;
-    WORD biPlanes;
-    WORD biBitCount;
-    DWORD biCompression;
-    DWORD biSizeImage;
+	uint16 biPlanes;
+	uint16 biBitCount;
+	uint32 biCompression;
+	uint32 biSizeImage;
     int biXPelsPerMeter;
     int biYPelsPerMeter;
-    DWORD biClrUsed;
-    DWORD biClrImportant;
-}BITMAPINFOHEADER;
+	uint32 biClrUsed;
+	uint32 biClrImportant;
+}BITMAP_INFOHEADER;
 
-typedef struct tagRGBQUAD{
-    BYTE rgbBlue;
-    BYTE rgbGreen;
-    BYTE rgbRed;
-    BYTE rgbReserved;
-}RGBQUAD;
+typedef struct tag_RGBQUAD{
+	uint8 rgbBlue;
+	uint8 rgbGreen;
+	uint8 rgbRed;
+	uint8 rgbReserved;
+}RGB_QUAD;
 
-typedef struct tagBITMAPINFO{
-    BITMAPINFOHEADER bmiHeader;
-    RGBQUAD bmiColors[1];
-}BITMAPINFO;
+typedef struct tag_BITMAP_INFO{
+    BITMAP_INFOHEADER bmiHeader;
+    RGB_QUAD bmiColors[1];
+}BITMAP_INFO;
 
 typedef struct BITMAP_FILE_TAG{
-    BITMAPFILEHEADER bitmapfileheader;
-    BITMAPINFOHEADER bitmapinfoheader;
-    RGBQUAD palette[256];
-    BYTE *buffer;
+    BITMAP_FILEHEADER bitmapfileheader;
+    BITMAP_INFOHEADER bitmapinfoheader;
+    RGB_QUAD palette[256];
+    uint8 *buffer;
 }BITMAP_FILE,*BITMAP_FILE_PTR;
 #pragma pack()
 

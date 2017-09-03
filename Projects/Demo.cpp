@@ -38,9 +38,7 @@ void Demo::OnEvent(int button, int action, int mods)
 
 Demo::Demo()
 {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	InputManager::GetInstance()->SetMouseEvent(this);
 	
 	m_RendererPtr = new SpriteRenderer();

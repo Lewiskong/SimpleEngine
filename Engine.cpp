@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "Projects/TestSence.h"
 #include "Projects/Demo.h"
+#include "Projects/TestNetwork.h"
 
 Engine::~Engine()
 {
@@ -21,9 +22,9 @@ Engine::Engine()
 
 void Engine::Init()
 {
-	
-	// mSence = new TestSence();
-	mSence = new Demo();
+	mSence = new TestNetwork();
+	//mSence = new TestSence();
+	//mSence = new Demo();
     InputManager::GetInstance()->SetKeyCallback();
     InputManager::GetInstance()->SetScrollCallback();
     InputManager::GetInstance()->SetMouseCallback();

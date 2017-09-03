@@ -122,6 +122,7 @@ ThirdParty/NetEase/WDF.h
 program.cpp
 Environment.h
 #main.cpp
+image.h
 global.h
 defines.h
 Objects/Object.h
@@ -135,6 +136,8 @@ Components/TransformComponent.h
 Components/TransformComponent.cpp
 Projects/TestSence.cpp
 Projects/TestSence.h
+Projects/TestNetwork.cpp
+Projects/TestNetwork.h
 Projects/Demo.h
 Projects/Demo.cpp
 Projects/Player.h

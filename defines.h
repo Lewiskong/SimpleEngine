@@ -15,9 +15,8 @@ typedef float		float32;
 typedef double		float64;
 typedef long double float128;
 
+typedef uint8_t   byte;
 
-typedef uint8_t BYTE,  byte;
-typedef uint8_t PBYTE;
 
 #include <string>
 #include <sstream>
@@ -53,17 +52,17 @@ inline void SafeDelete(T * &pointer)
 #pragma pack(1)   
 struct TGA_FILE_HEADER
 {
-	uint8 IdLength;             
-	uint8 ColorMapType;         
-	uint8 ImageType;            
-	uint16 ColorMapFirstIndex;  
-	uint16 ColorMapLength;      
-	uint8 ColorMapEntrySize;    
-	uint16 XOrigin;             
-	uint16 YOrigin;             
-	uint16 ImageWidth;          
-	uint16 ImageHeight;         
-	uint8 PixelDepth;           
-	uint8 ImageDescruptor;      
+	uint8 IdLength;
+	uint8 ColorMapType;
+	uint8 ImageType;
+	uint16 ColorMapFirstIndex;
+	uint16 ColorMapLength;
+	uint8 ColorMapEntrySize;
+	uint16 XOrigin;
+	uint16 YOrigin;
+	uint16 ImageWidth;
+	uint16 ImageHeight;
+	uint8 PixelDepth;
+	uint8 ImageDescruptor;
 };
 #pragma pack(pop)
