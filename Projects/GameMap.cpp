@@ -3,10 +3,17 @@
 #include <SOIL/SOIL.h>
 #include <random>
 #include <iostream>
+#include "Config.h"
+#include "Environment.h"
 
-GameMap::GameMap(std::string filename)
-{
-	mXyqMap = new NetEase::MAP(filename);
+
+GameMap::GameMap(uint32 mapId)
+{ 	/*读取配置*/
+	Config config(Environment::GetAbsPath("Projects/config.txt"));
+	config.Print();
+	std::string fileName = config.GetMapPath(config.mDict["map"][mapId]);
+
+	mXyqMap = new NetEase::MAP(fileName);
 
 	
 	mMapWidth = mXyqMap->m_MapWidth;

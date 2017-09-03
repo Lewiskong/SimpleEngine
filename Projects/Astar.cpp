@@ -105,16 +105,17 @@ bool Astar::PathFinding(int sx, int sy, int ex, int ey)
 		for (int i = 0; i < 8; i++) {
 			int new_x = cur_node->x + dir_x[i];
 			int new_y = cur_node->y + dir_y[i];
-				//printf("i:%d new_x : %d new_y : %d\n",i,new_x,new_y );
-			int new_G_dist = 10;
-			if (cur_node->parant != nullptr)
+				
+			//printf("i:%d new_x : %d new_y : %d\n",i,new_x,new_y );
+			int new_G_dist = i< 4 ?10  :14;
+			/*if (cur_node->parant != nullptr)
 			{
 				auto p_node = cur_node->parant;
 				if (cur_node->x - p_node->x == new_x-cur_node->x && cur_node->y - p_node->y == new_y- cur_node->y)
 				{
 					new_G_dist = 9;
 				}
-			}
+			}*/
 
 			if (mCell[new_x][new_y] >= 1 || findVis(new_x, new_y, mVisClose) != nullptr) {
 				continue;

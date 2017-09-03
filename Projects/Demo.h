@@ -16,6 +16,7 @@
 #include "../GMath.h"
 
 #include "FrameAnimation.h"
+#include "Player.h"
 
 
 
@@ -81,6 +82,8 @@ public:
 
 
 	FrameAnimation* m_Anims[2][2];
+	Player * m_Strider;
+
 };
 
 

@@ -15,7 +15,9 @@
 class GameMap
 {
 public:
-	GameMap(std::string filename);
+	
+	GameMap(uint32 mapId );
+
 	~GameMap();
 	std::list<Pos> Move(int sx, int sy, int ex, int ey);
 	NetEase::MAP* GetMapPtr();

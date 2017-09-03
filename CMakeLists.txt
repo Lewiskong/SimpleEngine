@@ -137,6 +137,8 @@ Projects/TestSence.cpp
 Projects/TestSence.h
 Projects/Demo.h
 Projects/Demo.cpp
+Projects/Player.h
+Projects/Player.cpp
 Projects/Astar.h
 Projects/Astar.cpp
 Projects/GameMap.cpp
