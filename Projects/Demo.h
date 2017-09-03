@@ -23,8 +23,6 @@
 class Demo : public IUpdateDraw, public IMouseEvent
 {
 public:
-
-	
 	Demo();
 	~Demo();
 
@@ -41,26 +39,21 @@ public:
 	void ProcessInput();
 	
 	// Game-related State data
-	SpriteRenderer  *Renderer;
+	SpriteRenderer  *m_RendererPtr;
 	
 	GLfloat delta = 0;
 
 	int dir = 0;
 	
-
 	double src_x = 0 , src_y = 0 ;
-	
 	double dest_x = src_x, dest_y= src_y;
-
-
 	double step_range_x = 0;
 	double step_range_y = 0;
 	double move_velocity = 500;
+
 	Pos dest;
 
-	
 	Texture* m_pBlockTexture;
-
 
 	int actor_state = 1;
 
@@ -71,14 +64,13 @@ public:
 	int frame_count = 0;
 	GameMap* mGameMap;
 
-
-
 	int cnt = 0;
 	GLfloat delta2=0;
 	bool draw_cell = false;
 
 	Player * m_Strider;
 
+	std::vector< Player * > m_NPCs;
 };
 
 

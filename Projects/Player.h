@@ -27,14 +27,10 @@ public:
 	void ResetDir(int dir);
 	void SetDir(int dir);
 
-
-	const std::vector<FrameAnimation*>& GetWeaponAnimation() const;
-	const std::vector<FrameAnimation*>& GetPlayerAnimation() const;
-	 
 	void SetAnimationState(int state) { m_AnimationState = state; };
 	int GetAnimationState(){ return m_AnimationState; }
 	
-	void OnDraw(SpriteRenderer * renderer, int mapWidth, int mapHeight,int mapOffsetX,int mapOffsetY);
+	void OnDraw(SpriteRenderer * renderer, int px,int py);
 	void SetPos(double x, double y);
 	double GetX() { return m_Pos.x; }
 	double GetY() { return m_Pos.y; }
@@ -47,6 +43,7 @@ public:
 
 	void TranslateX(double x) { m_Pos.x += x; }
 	void TranslateY(double y) { m_Pos.y += y; }
+	
 
 private:
 	std::vector<FrameAnimation*> m_WeapAnimation;
@@ -54,7 +51,6 @@ private:
 	int m_AnimationState;
 	int m_Dir;
 	Pos m_Pos;
-	
 	
 };
 

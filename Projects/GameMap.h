@@ -11,12 +11,11 @@
 /*
 游戏地图类的封装
 */
-
 class GameMap
 {
 public:
 	
-	GameMap(uint32 mapId );
+	GameMap(uint32 mapId);
 
 	~GameMap();
 	std::list<Pos> Move(int sx, int sy, int ex, int ey);
@@ -25,8 +24,8 @@ public:
 	Astar* GetAstar() { return mAstar; };
 	int GetRowCount() { return mRow; };
 	int GetColCount() { return mCol; };
-	void Draw(SpriteRenderer* renderer, int offx, int offy);
-	void DrawMask(SpriteRenderer* renderer, int offx, int offy);
+	void Draw(SpriteRenderer* renderer, int playerX, int playerY);
+	void DrawMask(SpriteRenderer* renderer, int playerX, int playerY);
 	void DrawCell(SpriteRenderer* renderer, int cur_x, int cur_y);
 	int GetWidth(){return mWidth;}
 	int GetHeight(){return mHeight;}

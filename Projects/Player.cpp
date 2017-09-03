@@ -9,7 +9,6 @@
 
 // PlayerId : 1-12 剑侠客是1
 // WeaponId : 0-160 对应某个武器
-
 std::map<uint32, std::vector< uint32>> Player::s_PlayerAnimationTable =
 {
 	{ 1, { 0x49386FCE, 0x54F3FC94 } }
@@ -23,9 +22,9 @@ std::map<uint32, std::map<uint32, std::vector< uint32>>> Player::s_WeaponAnimati
 
 Player::Player(int PlayerId,int WeaponId):
 m_PlayerAnimation(2),
-m_WeapAnimation(2)
+m_WeapAnimation(2),
+m_AnimationState(Idle)
 {
-	m_AnimationState = Idle;
 	m_PlayerAnimation[Idle] = new FrameAnimation(
 		ResourceManager::GetInstance()->LoadWdfSprite(s_PlayerAnimationTable[PlayerId][Idle])
 		);
@@ -54,33 +53,18 @@ void Player::OnUpdate(double dt)
 	m_WeapAnimation[m_AnimationState]->OnUpdate(dt);
 }
 
-
-void Player::OnDraw(SpriteRenderer * renderer, int mapWidth, int mapHeight,int mapOffsetX,int mapOffsetY)
+void Player::OnDraw(SpriteRenderer * renderer, int px,int py)
 {
-	int screenWidth = Demo::GetScreenWidth();
-	int screenHeight = Demo::GetScreenHeight();
-	int halfScreenWidth = Demo::GetScreenWidth() / 2;
-	int halfScreenHeight = Demo::GetScreenHeight() / 2;
-
-	int maxMapOffsetX = mapWidth - halfScreenWidth;
-	int maxMapOffsetY = mapHeight- halfScreenHeight;
-
-	int px = m_Pos.x < halfScreenWidth ? m_Pos.x:
-		(m_Pos.x > maxMapOffsetX ?
-		(screenWidth - (mapWidth - m_Pos.x)) : halfScreenWidth);
-	int py = m_Pos.y < halfScreenHeight ? m_Pos.y :
-		(m_Pos.y > maxMapOffsetY ?
-		(screenHeight - (mapHeight - m_Pos.y)) : halfScreenHeight);
-
 	px = px - m_PlayerAnimation[m_AnimationState]->GetWidth() / 2 + 10;
-	py = py - m_PlayerAnimation[m_AnimationState] ->GetHeight() + 20;
+	py = py - m_PlayerAnimation[m_AnimationState]->GetHeight() + 20;
 
 	m_PlayerAnimation[m_AnimationState]->Draw(renderer, px, py);
 
-	int px2 = px - (m_WeapAnimation [m_AnimationState ]->GetKeyX() - m_PlayerAnimation[m_AnimationState]->GetKeyX());
-	int py2 = py - (m_WeapAnimation[m_AnimationState]->GetKeyY() - m_PlayerAnimation [m_AnimationState]->GetKeyY());
+	int px2 = px - (m_WeapAnimation[m_AnimationState]->GetKeyX() - m_PlayerAnimation[m_AnimationState]->GetKeyX());
+	int py2 = py - (m_WeapAnimation[m_AnimationState]->GetKeyY() - m_PlayerAnimation[m_AnimationState]->GetKeyY());
 
-	m_WeapAnimation [m_AnimationState ]->Draw(renderer, px2, py2);
+	m_WeapAnimation[m_AnimationState]->Draw(renderer, px2, py2);
+	
 }
 
 
@@ -110,13 +94,4 @@ void Player::SetDir(int dir)
 	m_WeapAnimation[m_AnimationState]->SetCurrentGroup(dir);
 }
 
-const std::vector<FrameAnimation*>& Player::GetWeaponAnimation() const
-{
-	return m_WeapAnimation;
-}
-
-const std::vector<FrameAnimation*>& Player::GetPlayerAnimation() const
-{
-	return m_PlayerAnimation;
-}
 

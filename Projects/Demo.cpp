@@ -3,10 +3,8 @@
 #include "FrameAnimation.h"
 #include "Logger.h"
 
-
 bool changeState = false;
 double ddt = 0;
-
 float Demo::s_ScreenWidth = 800.0f;
 float Demo::s_ScreenHeight = 600.0f;
 
@@ -54,13 +52,38 @@ Demo::Demo()
 
 	m_Strider = new Player(1, 120);
 	
-	m_Strider->SetPos(400, 300);
-	
+	m_Strider->SetPos(300, 300);
+
 	mMoveList = mGameMap->Move(m_Strider->GetBoxX(), m_Strider->GetBoxY() , m_Strider->GetBoxX(), m_Strider->GetBoxY());
 
 	dir = (int) FrameAnimation::Dir::S_E;
 	m_Strider->ResetDirAll(dir);
+
+	int birthPos[10][2] = 
+	{
+		{ 400, 300},
+		{ 600, 900 },
+		{ 1550, 300 },
+		{ 600, 1900 },
+		{ 400, 2000 },
+		{ 2600, 400 },
+		{ 3400, 800 },
+		{ 4600, 900 },
+		{ 2400, 300 },
+		{ 600, 900 },
+	};
+
 	
+	for (int i = 0; i < 10; i++)
+	{
+		Player* player = new Player(1, 120);
+		player->SetPos(birthPos[i][0], birthPos[i][1]);
+		player->ResetDirAll(i % 8);
+		m_NPCs.push_back(player);
+		i++;
+	}
+	
+
 }
 
 Demo::~Demo()
@@ -117,6 +140,13 @@ void Demo::Update()
 	}
 
 	m_Strider->OnUpdate(dt);
+
+	for (Player* npc : m_NPCs)
+	{
+		npc->OnUpdate(dt);
+	}
+	
+	
 	
 
 	ProcessInput();
@@ -237,22 +267,45 @@ void Demo::ProcessInput()
 
 void Demo::Draw()
 {
-	int halfScreenWidth = GetScreenWidth() /2;
-	int halfScreenHeight = GetScreenHeight() /2;
-
+	
+	mGameMap->Draw(m_RendererPtr, m_Strider->GetX(), m_Strider->GetY());
+	
+	int screenWidth = Demo::GetScreenWidth();
+	int screenHeight = Demo::GetScreenHeight();
+	int halfScreenWidth = screenWidth / 2;
+	int halfScreenHeight = screenHeight / 2;
 	int mapOffsetX = halfScreenWidth - m_Strider->GetX();
 	int mapOffsetY = halfScreenHeight - m_Strider->GetY();
-
-	mapOffsetX = GMath::Clamp(mapOffsetX,-mGameMap->GetWidth() + GetScreenWidth(),0);
-	mapOffsetY = GMath::Clamp(mapOffsetY,-mGameMap->GetHeight() + GetScreenHeight(),0);
-
-	mGameMap->Draw(m_RendererPtr, mapOffsetX, mapOffsetY);
+	int mapWidth = mGameMap->GetWidth();
+	int mapHeight = mGameMap->GetHeight();
 	
+	int px = m_Strider->GetX();
+	int py = m_Strider->GetY();
+
+	mapOffsetX = GMath::Clamp(mapOffsetX, -mapWidth + screenWidth, 0);
+	mapOffsetY = GMath::Clamp(mapOffsetY, -mapHeight + screenHeight, 0);
 	
-	m_Strider->OnDraw(m_RendererPtr, mGameMap->GetWidth(), mGameMap->GetHeight(), mapOffsetX, mapOffsetY);
+	int maxMapOffsetX = mapWidth - halfScreenWidth;
+	int maxMapOffsetY = mapHeight - halfScreenHeight;
+	
+	px = px < halfScreenWidth ? px :
+		(px  > maxMapOffsetX ?
+		(screenWidth - (mapWidth - px)) : halfScreenWidth);
+	py = py < halfScreenHeight ? py :
+		(py> maxMapOffsetY ?
+		(screenHeight - (mapHeight - py)) : halfScreenHeight);
 
-	mGameMap->DrawMask(m_RendererPtr, mapOffsetX, mapOffsetY);
+	m_Strider->OnDraw(m_RendererPtr,px,py);
 
+
+	for (Player* npc : m_NPCs)
+	{
+		npc->OnDraw(m_RendererPtr, npc->GetX() + mapOffsetX, npc->GetY() + mapOffsetY);
+	}
+
+
+
+	mGameMap->DrawMask(m_RendererPtr, m_Strider->GetX(), m_Strider->GetY());
 	//Logger::Print("%lf %lf\n", cur_x, cur_y);
 	//mGameMap->DrawCell(m_RendererPtr, mapOffsetX, mapOffsetY);
 }

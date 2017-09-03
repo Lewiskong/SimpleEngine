@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Config.h"
 #include "Environment.h"
+#include "Demo.h"
 
 
 GameMap::GameMap(uint32 mapId)
@@ -15,14 +16,11 @@ GameMap::GameMap(uint32 mapId)
 
 	mXyqMap = new NetEase::MAP(fileName);
 
-	
 	mMapWidth = mXyqMap->m_MapWidth;
 	mMapHeight = mXyqMap->m_MapHeight;
 
-	
 	mWidth = mXyqMap->m_Width;
 	mHeight = mXyqMap->m_Height;
-
 	
 	mRow = mXyqMap->m_RowCount;
 	mCol = mXyqMap->m_ColCount;
@@ -42,7 +40,6 @@ GameMap::GameMap(uint32 mapId)
 	for (int i = 0; i<mXyqMap->m_MaskSize; i++)
 	{
 		mXyqMap->ReadMask(i);
-
 
 		mMaskTiles.push_back(new Texture(mXyqMap->m_MaskInfos[i].Width,
 			mXyqMap->m_MaskInfos[i].Height,true, (uint8*)(mXyqMap->m_MaskInfos)[i].Data ));
@@ -129,7 +126,7 @@ std::list<Pos> GameMap::Move(int sx, int sy, int ex, int ey)
 		return mAstar->GetMoveList();
 	}
 	else {
-		return{};
+		return{ };
 	}
 
 }
@@ -141,12 +138,25 @@ GameMap::~GameMap()
 		mXyqMap = nullptr;
 	}
 }
-void GameMap::Draw(SpriteRenderer* renderer,int offx,int offy)
+void GameMap::Draw(SpriteRenderer* renderer,int playerX,int playerY)
 {
+	int screenWidth = Demo::GetScreenWidth();
+	int screenHeight = Demo::GetScreenHeight();
+	int halfScreenWidth = screenWidth / 2;
+	int halfScreenHeight = screenHeight / 2;
+
+	int mapOffsetX = halfScreenWidth - playerX;
+	int mapOffsetY = halfScreenHeight - playerY;
+
+	mapOffsetX = GMath::Clamp(mapOffsetX, -mWidth + screenWidth, 0);
+	mapOffsetY = GMath::Clamp(mapOffsetY, -mHeight + screenHeight, 0);
+
+	// mGameMap->Draw(m_RendererPtr, mapOffsetX, mapOffsetY);
+
 	for (int i = 0; i<mRow; i++) {
 		for (int j = 0; j<mCol; j++) {
 			renderer->DrawSprite(mMapTiles[i*mCol + j],
-				glm::vec2(j * 320 + offx,i * 240 + offy),
+				glm::vec2(j * 320 + mapOffsetX, i * 240 + mapOffsetY),
 				glm::vec2(320, 240),
 				0.0f,
 				glm::vec3(1.0f, 1.0f, 1.0f)
@@ -172,21 +182,31 @@ void GameMap::DrawCell(SpriteRenderer* renderer, int cur_x, int cur_y)
 			}
 		}
 	}
-
 }
 
 
-
-
-void GameMap::DrawMask(SpriteRenderer* renderer, int offx, int offy)
+void GameMap::DrawMask(SpriteRenderer* renderer, int playerX, int playerY)
 {
+
+	int screenWidth = Demo::GetScreenWidth();
+	int screenHeight = Demo::GetScreenHeight();
+	int halfScreenWidth = screenWidth / 2;
+	int halfScreenHeight = screenHeight / 2;
+
+	int mapOffsetX = halfScreenWidth - playerX;
+	int mapOffsetY = halfScreenHeight - playerY;
+
+	mapOffsetX = GMath::Clamp(mapOffsetX, -mWidth + screenWidth, 0);
+	mapOffsetY = GMath::Clamp(mapOffsetY, -mHeight + screenHeight, 0);
+
+
 	for (int m = 0; m < mXyqMap->m_MaskSize; m++)
 	{
 		NetEase::MaskInfo& info = mXyqMap->m_MaskInfos[m];
 		renderer->DrawSprite(
 			mMaskTiles[m],
-			glm::vec2(info.StartX + offx,
-				info.StartY  + offy),
+			glm::vec2(info.StartX + mapOffsetX,
+			info.StartY + mapOffsetY),
 			glm::vec2(info.Width, info.Height),
 			0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 	}
