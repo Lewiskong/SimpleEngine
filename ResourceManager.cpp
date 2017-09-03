@@ -12,12 +12,6 @@
 #include "Projects/Config.h"
 #include "Environment.h"
 
-
-
-// Instantiate static variables
-std::map<std::string, Texture*>    ResourceManager::Textures;
-std::map<std::string, Shader*>       ResourceManager::Shaders;
-
 ResourceManager::ResourceManager()
 	:Singleton<ResourceManager>()
 {
@@ -26,7 +20,12 @@ ResourceManager::ResourceManager()
 	m_ShapeWdfPtr = new NetEase::WDF(config.GetWdfPath("shape.wdf"));
 	m_ShapeWd3Ptr = new NetEase::WDF(config.GetWdfPath("shape.wd3"));
 
+	std::string vPath = Environment::GetAbsPath("Shader/sprite.vs");
+	std::string fPath = Environment::GetAbsPath("Shader/sprite.frag");
+	std::cout << " vPath:" << vPath << std::endl;
+	std::cout << " fPath:" << fPath << std::endl;
 
+	LoadShader(vPath, fPath, "", "sprite");
 }
 ResourceManager::~ResourceManager()
 {

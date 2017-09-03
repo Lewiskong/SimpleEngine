@@ -7,11 +7,20 @@
  ** option) any later version.
  ******************************************************************/
 #include "SpriteRenderer.h"
+#include "ResourceManager.h"
 
 
-SpriteRenderer::SpriteRenderer(Shader* shader)
+SpriteRenderer::SpriteRenderer()
 {
-    m_pShader = shader;
+
+	// Configure shaders
+	glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
+	m_pShader = ResourceManager::GetInstance()->GetShader("sprite");
+	m_pShader->Bind();
+
+	glUniform1i(glGetUniformLocation(m_pShader->GetProgramID(), "image"), 0);
+	glUniformMatrix4fv(glGetUniformLocation(m_pShader->GetProgramID(), "projection"), 1, GL_FALSE, (GLfloat*)(&projection));
+
     initRenderData();
 }
 

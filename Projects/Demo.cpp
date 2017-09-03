@@ -33,8 +33,8 @@ void Demo::OnEvent(int button, int action, int mods)
 
 		Logger::Print("box X:%lf  Y:%lf \n", (-mapOffsetX + mouse_x) / 20, (-mapOffsetY + mouse_y) / 20);
 		bmove = true;
-		//SetState(STATE_MOVE);
-		m_State = STATE_MOVE;
+		
+		m_Strider->SetAnimationState(Player::Moving);
 		
 	}
 }
@@ -46,22 +46,8 @@ Demo::Demo()
 
 	InputManager::GetInstance()->SetMouseEvent(this);
 	
-	std::string vPath =  Environment::GetAbsPath("Shader/sprite.vs");
-	std::string fPath =  Environment::GetAbsPath("Shader/sprite.frag");
-	std::cout <<" vPath:" << vPath << std::endl;
-	std::cout <<" fPath:" << fPath << std::endl;
+	Renderer = new SpriteRenderer();
 
-	ResourceManager::LoadShader(vPath, fPath, "", "sprite");
-
-  // Configure shaders
-	glm::mat4 projection = glm::ortho(0.0f, 800.0f,600.0f, 0.0f, -1.0f, 1.0f);
-	Shader* shader = ResourceManager::GetShader("sprite");
-	shader->Bind();
-
-	glUniform1i(glGetUniformLocation(shader->GetProgramID(), "image"), 0);    
-	glUniformMatrix4fv(glGetUniformLocation(shader->GetProgramID(), "projection"), 1, GL_FALSE, (GLfloat*) (&projection));
-
-	Renderer = new SpriteRenderer(shader);
 	mGameMap = new GameMap(0);
 
 	auto blockPath = Environment::GetAbsPath("Resource/Assets/wall.jpg");
@@ -75,7 +61,7 @@ Demo::Demo()
 	mMoveList = mGameMap->Move(cur_x/20, cur_y/20, cur_x/20, cur_y/20);
 
 	dir = (int) FrameAnimation::Dir::S_E;
-	m_Strider->ResetDir(dir);
+	m_Strider->ResetDirAll(dir);
 	
 }
 
@@ -112,8 +98,8 @@ void Demo::Update()
 					cur_x += step_range_x * local_velocity;
 					cur_y += step_range_y * local_velocity;
 
-					m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-					m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
+					m_Strider->SetDir(dir);
+					
 
 				}
 				else {
@@ -128,19 +114,17 @@ void Demo::Update()
 			{
 				bmove = false;
 			//	SetState(STATE_STAND);
-				m_State = STATE_STAND;
-				m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-				m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
-
+				
+				m_Strider->SetAnimationState(Player::Idle);
+				m_Strider->SetDir(dir);
 			}
 			Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
 		}
 		
 	}
 
-
-	m_Strider->GetPlayerAnimation()[m_State]->OnUpdate(dt);
-	m_Strider->GetWeaponAnimation()[m_State]->OnUpdate(dt);
+	m_Strider->OnUpdate(dt);
+	
 
 	ProcessInput();
 
@@ -160,9 +144,8 @@ void Demo::SetState(int state)
 	if (!changeState)
 	{
 		changeState = true;
-
-		m_State = state;
-
+		m_Strider->SetAnimationState(state);
+		
 		m_Strider->GetPlayerAnimation()[m_State]->Reset(dir);
 		m_Strider->GetWeaponAnimation()[m_State]->Reset(dir);
 
@@ -203,85 +186,71 @@ void Demo::ProcessInput()
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_3) || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_3))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S_E);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
-
+		m_Strider->SetDir(dir);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_1)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_1))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S_W);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
+		m_Strider->SetDir(dir);
 	}
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_7)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_7))
 	{
 
 		dir = static_cast<int>(FrameAnimation::Dir::N_W);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
+		m_Strider->SetDir(dir);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_9)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_9))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::N_E);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
-
+		m_Strider->SetDir(dir);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_2)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_2))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
+		m_Strider->SetDir(dir);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_4)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_4))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::W);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
-
+		m_Strider->SetDir(dir);
 	}
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_8)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_8))
 	{
 
 		dir = static_cast<int>(FrameAnimation::Dir::N);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
+		m_Strider->SetDir(dir);
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_6)  || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_6))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::E);
-		m_Strider->GetPlayerAnimation()[m_State]->SetCurrentGroup(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->SetCurrentGroup(dir);
-
+		m_Strider->SetDir(dir);
 	}
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_5) && !changeState)
 	{
 		changeState = true;
-		if (m_State == STATE_MOVE)
+		
+		if ( m_Strider->GetAnimationState() == Player::Moving)
 		{
-			m_State = STATE_STAND;
+			m_Strider->SetAnimationState(Player::Idle);
 		}
 		else
 		{
-			m_State = STATE_MOVE;
+			m_Strider->SetAnimationState(Player::Moving);
 		}
-
-		m_Strider->GetPlayerAnimation()[m_State]->Reset(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->Reset(dir);
-
+		m_Strider->ResetDir(dir);
 	}
 
 }
@@ -309,18 +278,8 @@ void Demo::Draw()
 	(cur_y > maxMapOffsetY ?
 		(ScreenHeight- ( mGameMap->GetHeight() - cur_y)) : halfScreenHeight );
 	
-	const std::vector< FrameAnimation*>& playerAnim = m_Strider->GetPlayerAnimation();
-	const std::vector< FrameAnimation*>& weaponAnim = m_Strider->GetWeaponAnimation();
+	m_Strider->OnDraw(Renderer, px, py);
 
-	px = px - playerAnim[m_State]->GetWidth() / 2 + 10;
-	py = py - playerAnim[m_State]->GetHeight() + 20;
-
-	playerAnim[m_State]->Draw(Renderer, px, py);
-
-	int px2 = px - (weaponAnim[m_State]->GetKeyX() - playerAnim[m_State]->GetKeyX());
-	int py2 = py - (weaponAnim[m_State]->GetKeyY() - playerAnim[m_State]->GetKeyY());
-	weaponAnim[m_State]->Draw(Renderer, px2, py2);
-	
 	mGameMap->DrawMask(Renderer, mapOffsetX, mapOffsetY);
 
 	//Logger::Print("%lf %lf\n", cur_x, cur_y);

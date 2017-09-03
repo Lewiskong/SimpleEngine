@@ -27,23 +27,20 @@ public:
 
 	friend Singleton<ResourceManager>;
 
-    // Resource storage
-    static std::map<std::string, Shader*>  Shaders;
-    static std::map<std::string, Texture*> Textures;
-	
 	Sprite2 LoadWdfSprite(int wasId);
 	Sprite2 LoadWd3Sprite(int wasId);
 
     // Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
-    static void LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name);
+    void LoadShader(const std::string vShaderFile, const std::string fShaderFile, const std::string gShaderFile, std::string name);
     // Retrieves a stored sader
-    static Shader*   GetShader(std::string name);
+    Shader*   GetShader(std::string name);
     // Loads (and generates) a texture from file
-    static Texture* LoadTexture(const uint8 *src, bool alpha, std::string name);
+    Texture* LoadTexture(const uint8 *src, bool alpha, std::string name);
     // Retrieves a stored texture
-    static Texture* GetTexture(std::string name);
+    Texture* GetTexture(std::string name);
     // Properly de-allocates all loaded resources
-    static void      Clear();
+    void      Clear();
+
 private:
     // Private constructor, that is we do not want any actual resource manager objects. Its members and functions should be publicly available (static).
 	ResourceManager();
@@ -51,5 +48,9 @@ private:
 	
 	NetEase::WDF* m_ShapeWdfPtr;
 	NetEase::WDF* m_ShapeWd3Ptr;
+	
+	// Resource storage
+	std::map<std::string, Shader*>  Shaders;
+	std::map<std::string, Texture*> Textures;
 
 };

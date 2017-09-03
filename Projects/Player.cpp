@@ -24,7 +24,8 @@ Player::Player(int PlayerId,int WeaponId):
 m_PlayerAnimation(2),
 m_WeapAnimation(2)
 {
-	m_PlayerAnimation[Idle] =   new FrameAnimation(
+	m_AnimationState = Idle;
+	m_PlayerAnimation[Idle] = new FrameAnimation(
 		ResourceManager::GetInstance()->LoadWdfSprite(s_PlayerAnimationTable[PlayerId][Idle])
 		);
 
@@ -46,30 +47,46 @@ Player::~Player()
 
 }
 
-void Player::OnUpdate(GLfloat dt)
+void Player::OnUpdate(double dt)
 {
-
+	m_PlayerAnimation[m_AnimationState]->OnUpdate(dt);
+	m_WeapAnimation[m_AnimationState]->OnUpdate(dt);
 }
 
-void Player::OnDraw()
-{
 
+void Player::OnDraw(SpriteRenderer * renderer, int px, int py)
+{
+	px = px - m_PlayerAnimation[m_AnimationState]->GetWidth() / 2 + 10;
+	py = py - m_PlayerAnimation[m_AnimationState] ->GetHeight() + 20;
+
+
+	m_PlayerAnimation[m_AnimationState]->Draw(renderer, px, py);
+
+	int px2 = px - (m_WeapAnimation [m_AnimationState ]->GetKeyX() - m_PlayerAnimation[m_AnimationState]->GetKeyX());
+	int py2 = py - (m_WeapAnimation[m_AnimationState]->GetKeyY() - m_PlayerAnimation [m_AnimationState]->GetKeyY());
+
+	m_WeapAnimation [m_AnimationState ]->Draw(renderer, px2, py2);
 }
 
-void Player::ResetDir(int dir )
-{
-	//for (int i = 0; i < 2; i++)
-	//	for (int j = 0; j < 2; j++)
-	//	{
-	//		//m_Strider->Reset(dir);
-	//		m_Anims[i][j]->Reset(dir);
-	//	}
 
+void Player::ResetDirAll(int dir)
+{
 	m_WeapAnimation[Idle]->Reset(dir);
 	m_WeapAnimation[Moving]->Reset(dir);
 	m_PlayerAnimation[Idle]->Reset(dir);
 	m_PlayerAnimation[Moving]->Reset(dir);
+}
 
+void Player::ResetDir(int dir)
+{
+	m_PlayerAnimation[m_AnimationState]->Reset(dir);
+	m_WeapAnimation[m_AnimationState]->Reset(dir);
+}
+
+void Player::SetDir(int dir)
+{
+	m_PlayerAnimation[m_AnimationState]->SetCurrentGroup(dir);
+	m_WeapAnimation[m_AnimationState]->SetCurrentGroup(dir);
 }
 
 const std::vector<FrameAnimation*>& Player::GetWeaponAnimation() const
@@ -81,3 +98,4 @@ const std::vector<FrameAnimation*>& Player::GetPlayerAnimation() const
 {
 	return m_PlayerAnimation;
 }
+

@@ -80,8 +80,6 @@ public:
 	GLfloat delta2=0;
 	bool draw_cell = false;
 
-
-	FrameAnimation* m_Anims[2][2];
 	Player * m_Strider;
 
 };
