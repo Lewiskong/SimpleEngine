@@ -1,95 +1,95 @@
 #pragma once
-#include <WS2tcpip.h>
-#pragma comment (lib,"ws2_32.lib")
+// #include <WS2tcpip.h>
+// #pragma comment (lib,"ws2_32.lib")
 
 
 
-#include "defines.h"
-#include "IUpdateDraw.h"
+// #include "defines.h"
+// #include "IUpdateDraw.h"
 
 
 
-#define MAX_BUFFER_SIZE (49152)
+// #define MAX_BUFFER_SIZE (49152)
 
-// Forward declaration of class
-class CTcpListener;
+// // Forward declaration of class
+// class CTcpListener;
 
-// Callback to data received
-typedef void(*MessageRecievedHandler)(CTcpListener* listener, int socketId, std::string msg);
+// // Callback to data received
+// typedef void(*MessageRecievedHandler)(CTcpListener* listener, int socketId, std::string msg);
 
-class CTcpListener
-{
+// class CTcpListener
+// {
 
-public:
+// public:
 
-	// Constructor
-	CTcpListener(std::string ipAddress, int port, MessageRecievedHandler handler);
+// 	// Constructor
+// 	CTcpListener(std::string ipAddress, int port, MessageRecievedHandler handler);
 
-	// Destructor
-	~CTcpListener();
+// 	// Destructor
+// 	~CTcpListener();
 
-	// Send a message to the specified client
-	void Send(int clientSocket, std::string msg);
+// 	// Send a message to the specified client
+// 	void Send(int clientSocket, std::string msg);
 
-	// Initialize winsock
-	bool Init();
+// 	// Initialize winsock
+// 	bool Init();
 
-	// The main processing loop
-	void Run();
+// 	// The main processing loop
+// 	void Run();
 
-	// Clean up after using the service
-	void Cleanup();
+// 	// Clean up after using the service
+// 	void Cleanup();
 
-private:
+// private:
 
-	// Create a socket
-	SOCKET CreateSocket();
+// 	// Create a socket
+// 	SOCKET CreateSocket();
 
-	// Wait for a connection
-	SOCKET WaitForConnection(SOCKET listening);
+// 	// Wait for a connection
+// 	SOCKET WaitForConnection(SOCKET listening);
 
-	// Address of the server
-	std::string				m_ipAddress;
+// 	// Address of the server
+// 	std::string				m_ipAddress;
 
-	// Listening port
-	int						m_port;
+// 	// Listening port
+// 	int						m_port;
 
-	// Message received event handler
-	MessageRecievedHandler	MessageReceived;
-};
-
-
-class CQotd
-{
-public:
-
-	// Constructor
-	CQotd(std::string filename);
-
-	// Get a random quote from the file
-	std::string GetRandomQuote();
-
-private:
-
-	// The quotes
-	std::vector<std::string> quotes;
-};
+// 	// Message received event handler
+// 	MessageRecievedHandler	MessageReceived;
+// };
 
 
-class TestNetwork :public IUpdateDraw
-{
-public:
-	TestNetwork();
-	~TestNetwork();
+// class CQotd
+// {
+// public:
+
+// 	// Constructor
+// 	CQotd(std::string filename);
+
+// 	// Get a random quote from the file
+// 	std::string GetRandomQuote();
+
+// private:
+
+// 	// The quotes
+// 	std::vector<std::string> quotes;
+// };
+
+
+// class TestNetwork :public IUpdateDraw
+// {
+// public:
+// 	TestNetwork();
+// 	~TestNetwork();
 
 	
-	void TestServer();
+// 	void TestServer();
 	
 	
 
-	virtual void Update() override;
+// 	virtual void Update() override;
 
 
-	virtual void Draw() override;
+// 	virtual void Draw() override;
 
-};
+// };

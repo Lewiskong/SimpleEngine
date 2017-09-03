@@ -1,6 +1,6 @@
 #include "FrameAnimation.h"
 
-FrameAnimation::FrameAnimation(Sprite2& sprite)
+FrameAnimation::FrameAnimation(Sprite2 sprite)
 {
 	m_CurrentFrame = 0;
 	m_CurrentGroup = 0;

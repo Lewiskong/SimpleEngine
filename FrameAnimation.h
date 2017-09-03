@@ -21,7 +21,7 @@ public:
 		S_W = 1,
 	};
 
-	FrameAnimation(Sprite2& sprite);
+	FrameAnimation(Sprite2 sprite);
 	~FrameAnimation();
 
 	int GetCurrentFrame() { return m_CurrentFrame;}
