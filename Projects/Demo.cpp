@@ -3,16 +3,13 @@
 #include "FrameAnimation.h"
 #include "Logger.h"
 
-const int Demo::STATE_MOVE = 1;
-const int Demo::STATE_STAND = 0;
-const int Demo::ANIM_CHARACTER = 0;
-const int Demo::ANIM_WEAPON = 1;
-
-const int CHARACTOR_BLOCK_OFFSET_X=0;
-const int CHARACTOR_BLOCK_OFFSET_Y=10;
 
 bool changeState = false;
 double ddt = 0;
+
+float Demo::s_ScreenWidth = 800.0f;
+float Demo::s_ScreenHeight = 600.0f;
+
 void Demo::OnEvent(int button, int action, int mods) 
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
@@ -20,22 +17,24 @@ void Demo::OnEvent(int button, int action, int mods)
 		std::cout << " OnEvent : call success!" << std::endl;
 		mMoveList.clear();
 
-		int mapOffsetX = ScreenWidth / 2 - cur_x;
-		int mapOffsetY = ScreenHeight / 2 - cur_y;
+		int halfScreenWidth = GetScreenWidth() / 2;
+		int halfScreenHeight = GetScreenHeight() / 2;
+
+		int mapOffsetX = halfScreenWidth - m_Strider->GetX();
+		int mapOffsetY = halfScreenHeight - m_Strider->GetY();
 		
-		mapOffsetX = GMath::Clamp(mapOffsetX,-mGameMap->GetWidth() + ScreenWidth,0);
-		mapOffsetY = GMath::Clamp(mapOffsetY,-mGameMap->GetHeight() + ScreenHeight,0);
+		mapOffsetX = GMath::Clamp(mapOffsetX, -mGameMap->GetWidth() + s_ScreenWidth, 0);
+		mapOffsetY = GMath::Clamp(mapOffsetY, -mGameMap->GetHeight() + s_ScreenHeight, 0);
 
 		double mouse_x = InputManager::GetInstance()->GetMouseX();
 		double mouse_y = InputManager::GetInstance()->GetMouseY();
-		mMoveList = mGameMap->Move(cur_x / 20, cur_y / 20, (-mapOffsetX + mouse_x) / 20,
+		mMoveList = mGameMap->Move(m_Strider->GetBoxX(),m_Strider->GetBoxY(), (-mapOffsetX + mouse_x) / 20,
 			(-mapOffsetY + mouse_y) / 20);
 
 		Logger::Print("box X:%lf  Y:%lf \n", (-mapOffsetX + mouse_x) / 20, (-mapOffsetY + mouse_y) / 20);
 		bmove = true;
 		
 		m_Strider->SetAnimationState(Player::Moving);
-		
 	}
 }
 
@@ -46,7 +45,7 @@ Demo::Demo()
 
 	InputManager::GetInstance()->SetMouseEvent(this);
 	
-	Renderer = new SpriteRenderer();
+	m_RendererPtr = new SpriteRenderer();
 
 	mGameMap = new GameMap(0);
 
@@ -54,11 +53,10 @@ Demo::Demo()
 	m_pBlockTexture = new Texture(blockPath);
 
 	m_Strider = new Player(1, 120);
-
-	cur_x = 400;
-	cur_y = 30;
-
-	mMoveList = mGameMap->Move(cur_x/20, cur_y/20, cur_x/20, cur_y/20);
+	
+	m_Strider->SetPos(400, 300);
+	
+	mMoveList = mGameMap->Move(m_Strider->GetBoxX(), m_Strider->GetBoxY() , m_Strider->GetBoxX(), m_Strider->GetBoxY());
 
 	dir = (int) FrameAnimation::Dir::S_E;
 	m_Strider->ResetDirAll(dir);
@@ -85,8 +83,8 @@ void Demo::Update()
 				dest.x = d.x * 20 + 10;
 				dest.y = d.y * 20 + 10;
 
-				if (GMath::Astar_GetDistance(cur_x, cur_y, dest.x, dest.y) > local_velocity) {
-					double degree = GMath::Astar_GetAngle(cur_x, cur_y, dest.x, dest.y);
+				if (GMath::Astar_GetDistance(m_Strider->GetX(), m_Strider->GetY(), dest.x, dest.y) > local_velocity) {
+					double degree = GMath::Astar_GetAngle(m_Strider->GetX(), m_Strider->GetY(), dest.x, dest.y);
 
 					dir = GMath::Astar_GetDir(degree);
 
@@ -95,30 +93,25 @@ void Demo::Update()
 					step_range_x = cos(DegreeToRadian(degree));
 					step_range_y = sin(DegreeToRadian(degree));
 
-					cur_x += step_range_x * local_velocity;
-					cur_y += step_range_y * local_velocity;
-
-					m_Strider->SetDir(dir);
+					m_Strider->TranslateX(step_range_x * local_velocity);
+					m_Strider->TranslateY(step_range_y * local_velocity);
 					
-
+					m_Strider->SetDir(dir);
 				}
 				else {
 					Pos d = mMoveList.front();
-					cur_x = d.x * 20 + 10;
-					cur_y = d.y * 20 + 10;
+					m_Strider->SetX(d.x * 20 + 10);
+					m_Strider->SetY(d.y * 20 + 10);
 					mMoveList.pop_front();
 				}
-
 			}
 			else
 			{
 				bmove = false;
-			//	SetState(STATE_STAND);
-				
 				m_Strider->SetAnimationState(Player::Idle);
 				m_Strider->SetDir(dir);
 			}
-			Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
+			Logger::Print("cur_x:%lf cur_y:%lf\n", m_Strider->GetX(),m_Strider->GetY());
 		}
 		
 	}
@@ -138,48 +131,35 @@ void Demo::Update()
 	}
 }
 
-
-void Demo::SetState(int state)
-{
-	if (!changeState)
-	{
-		changeState = true;
-		m_Strider->SetAnimationState(state);
-		
-		m_Strider->GetPlayerAnimation()[m_State]->Reset(dir);
-		m_Strider->GetWeaponAnimation()[m_State]->Reset(dir);
-
-	}
-}
-
 void Demo::ProcessInput()
 {
 	int amout = 1;
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_W))
 	{
-		cur_y -= amout;
-		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
+		m_Strider->TranslateY(-amout);
+
+		Logger::Print("cur_x:%lf cur_y:%lf\n", m_Strider->GetX(), m_Strider->GetY());
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_A))
 	{
-		cur_x -= amout;
-		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
+		m_Strider->TranslateX(-amout);
+		Logger::Print("cur_x:%lf cur_y:%lf\n", m_Strider->GetX(), m_Strider->GetY());
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_S))
 	{
-		cur_y += amout;
-		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
+		m_Strider->TranslateY(amout);
+		Logger::Print("cur_x:%lf cur_y:%lf\n", m_Strider->GetX(), m_Strider->GetY());
 	}
 
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_D))
 	{
-		cur_x += amout;
-		Logger::Print("cur_x:%lf cur_y:%lf\n", cur_x,cur_y);
+		m_Strider->TranslateX(amout);
+		Logger::Print("cur_x:%lf cur_y:%lf\n", m_Strider->GetX(), m_Strider->GetY());
 	}
 
 
@@ -257,33 +237,23 @@ void Demo::ProcessInput()
 
 void Demo::Draw()
 {
-	int halfScreenWidth = ScreenWidth /2;
-	int halfScreenHeight = ScreenHeight/2;
+	int halfScreenWidth = GetScreenWidth() /2;
+	int halfScreenHeight = GetScreenHeight() /2;
 
-	int mapOffsetX = halfScreenWidth - cur_x;
-	int mapOffsetY = halfScreenHeight - cur_y;
+	int mapOffsetX = halfScreenWidth - m_Strider->GetX();
+	int mapOffsetY = halfScreenHeight - m_Strider->GetY();
 
-	mapOffsetX = GMath::Clamp(mapOffsetX,-mGameMap->GetWidth() + ScreenWidth ,0);
-	mapOffsetY = GMath::Clamp(mapOffsetY,-mGameMap->GetHeight() + ScreenHeight,0);
+	mapOffsetX = GMath::Clamp(mapOffsetX,-mGameMap->GetWidth() + GetScreenWidth(),0);
+	mapOffsetY = GMath::Clamp(mapOffsetY,-mGameMap->GetHeight() + GetScreenHeight(),0);
 
-	mGameMap->Draw(Renderer, mapOffsetX , mapOffsetY);
+	mGameMap->Draw(m_RendererPtr, mapOffsetX, mapOffsetY);
 	
-	int maxMapOffsetX = mGameMap->GetWidth() - halfScreenWidth ;
-	int maxMapOffsetY = mGameMap->GetHeight()  - halfScreenHeight;
-
-	int px = cur_x <  halfScreenWidth ? cur_x : 
-	(cur_x > maxMapOffsetX ? 
-		(ScreenWidth- ( mGameMap->GetWidth() - cur_x) ) : halfScreenWidth );
-	int py = cur_y <  halfScreenHeight ? cur_y : 
-	(cur_y > maxMapOffsetY ?
-		(ScreenHeight- ( mGameMap->GetHeight() - cur_y)) : halfScreenHeight );
 	
-	m_Strider->OnDraw(Renderer, px, py);
+	m_Strider->OnDraw(m_RendererPtr, mGameMap->GetWidth(), mGameMap->GetHeight(), mapOffsetX, mapOffsetY);
 
-	mGameMap->DrawMask(Renderer, mapOffsetX, mapOffsetY);
+	mGameMap->DrawMask(m_RendererPtr, mapOffsetX, mapOffsetY);
 
 	//Logger::Print("%lf %lf\n", cur_x, cur_y);
-	
-	//mGameMap->DrawCell(Renderer, mapOffsetX, mapOffsetY);
+	//mGameMap->DrawCell(m_RendererPtr, mapOffsetX, mapOffsetY);
 }
 

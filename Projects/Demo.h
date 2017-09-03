@@ -24,22 +24,21 @@ class Demo : public IUpdateDraw, public IMouseEvent
 {
 public:
 
-	static const int STATE_MOVE;
-	static const int STATE_STAND;
-	static const int ANIM_CHARACTER;
-	static const int ANIM_WEAPON;
-	static const int CHARACTOR_BLOCK_OFFSET_X;
-	static const int CHARACTOR_BLOCK_OFFSET_Y;
-
+	
 	Demo();
 	~Demo();
+
+	static float s_ScreenWidth; 
+	static float s_ScreenHeight;
+
+	static int GetScreenWidth(){ return s_ScreenWidth; };
+	static int GetScreenHeight(){ return s_ScreenHeight; };
+
 	void Update() override;
 	void Draw() override;
 	void OnEvent(int button, int action, int mods) override;
 
 	void ProcessInput();
-	void SetState(int state);
-	
 	
 	// Game-related State data
 	SpriteRenderer  *Renderer;
@@ -48,10 +47,9 @@ public:
 
 	int dir = 0;
 	
-	int m_State = STATE_STAND;
 
 	double src_x = 0 , src_y = 0 ;
-	double cur_x, cur_y;
+	
 	double dest_x = src_x, dest_y= src_y;
 
 
@@ -60,8 +58,7 @@ public:
 	double move_velocity = 500;
 	Pos dest;
 
-	float ScreenWidth = 800.0f;
-	float ScreenHeight = 600.0f;
+	
 	Texture* m_pBlockTexture;
 
 

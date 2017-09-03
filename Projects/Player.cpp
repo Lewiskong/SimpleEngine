@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "ResourceManager.h"
+#include "Demo.h"
 
 //
 //map 1501.map
@@ -54,11 +55,25 @@ void Player::OnUpdate(double dt)
 }
 
 
-void Player::OnDraw(SpriteRenderer * renderer, int px, int py)
+void Player::OnDraw(SpriteRenderer * renderer, int mapWidth, int mapHeight,int mapOffsetX,int mapOffsetY)
 {
+	int screenWidth = Demo::GetScreenWidth();
+	int screenHeight = Demo::GetScreenHeight();
+	int halfScreenWidth = Demo::GetScreenWidth() / 2;
+	int halfScreenHeight = Demo::GetScreenHeight() / 2;
+
+	int maxMapOffsetX = mapWidth - halfScreenWidth;
+	int maxMapOffsetY = mapHeight- halfScreenHeight;
+
+	int px = m_Pos.x < halfScreenWidth ? m_Pos.x:
+		(m_Pos.x > maxMapOffsetX ?
+		(screenWidth - (mapWidth - m_Pos.x)) : halfScreenWidth);
+	int py = m_Pos.y < halfScreenHeight ? m_Pos.y :
+		(m_Pos.y > maxMapOffsetY ?
+		(screenHeight - (mapHeight - m_Pos.y)) : halfScreenHeight);
+
 	px = px - m_PlayerAnimation[m_AnimationState]->GetWidth() / 2 + 10;
 	py = py - m_PlayerAnimation[m_AnimationState] ->GetHeight() + 20;
-
 
 	m_PlayerAnimation[m_AnimationState]->Draw(renderer, px, py);
 
@@ -68,6 +83,12 @@ void Player::OnDraw(SpriteRenderer * renderer, int px, int py)
 	m_WeapAnimation [m_AnimationState ]->Draw(renderer, px2, py2);
 }
 
+
+void Player::SetPos(double x, double y)
+{
+	m_Pos.x = x;
+	m_Pos.y = y;
+}
 
 void Player::ResetDirAll(int dir)
 {
