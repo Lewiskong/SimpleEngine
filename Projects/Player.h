@@ -6,8 +6,6 @@
 #include "Config.h"
 #include "GameMap.h"
 
-
-
 class Player 
 {
 public:
@@ -47,6 +45,10 @@ public:
 	
 
 	void MoveTo(GameMap* gameMapPtr, int param2, int param3);
+	void SetVelocity(int velocity) { m_MoveVelocity = velocity; };
+
+	bool IsMove() { return m_IsMove; }
+		 
 private:
 	std::vector<FrameAnimation*> m_WeapAnimation;
 	std::vector<FrameAnimation*> m_PlayerAnimation;

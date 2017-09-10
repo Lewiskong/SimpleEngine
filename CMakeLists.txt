@@ -153,6 +153,8 @@ InputManager.h
 InputManager.cpp
 Window.h
 Window.cpp
+Random.cpp
+Random.h
 TextureManager.h
 TextureManager.cpp
 Texture.h

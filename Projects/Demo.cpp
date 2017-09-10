@@ -2,6 +2,7 @@
 
 #include "FrameAnimation.h"
 #include "Logger.h"
+#include "Random.h"
 
 
 float Demo::s_ScreenWidth = 800.0f;
@@ -28,6 +29,7 @@ void Demo::OnEvent(int button, int action, int mods)
 }
 
 Demo::Demo()
+	:m_IsTestNpc0(true)
 {
 	InputManager::GetInstance()->SetMouseEvent(this);
 	
@@ -97,16 +99,28 @@ void Demo::Update()
 
 void Demo::ProcessInput()
 {
+	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_T) && m_IsTestNpc0)
+	{
+		bool movingSuccess = false;
+		do 
+		{
+			int destBoxX, destBoxY;
+			destBoxX = Random::NextInt(0, m_GameMapPtr->GetWidth() / 20 -1);
+			destBoxY = Random::NextInt(0, m_GameMapPtr->GetHeight() / 20 -1);
+			int velocity;
+			velocity = Random::NextInt(150, 375);
+			m_NPCs[0]->SetVelocity(velocity);
+			m_NPCs[0]->MoveTo(m_GameMapPtr, destBoxX, destBoxY);
+			movingSuccess = m_NPCs[0]->IsMove();
+		} while (!movingSuccess);
+	}
+
+
 	int amout = 1;
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_W))
 	{
 		m_StriderPtr->TranslateY(-amout);
 		Logger::Print("cur_x:%lf cur_y:%lf\n", m_StriderPtr->GetX(), m_StriderPtr->GetY());
-		if (g_IsTest)
-		{
-			g_IsTest = false;
-			m_NPCs[0]->MoveTo(m_GameMapPtr, (2450-10) / 20 , (370-10) / 20);
-		}
 	}
 
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_A))

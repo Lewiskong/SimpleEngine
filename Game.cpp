@@ -6,7 +6,6 @@ Game::Game(int w,int h,std::string title)
 	mResWidth =  w;
 	mResHeight = h;
 	mTitle = title;
-
 }
 
 Game::~Game()

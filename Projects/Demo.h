@@ -51,6 +51,7 @@ private:
 
 	bool m_IsChangeState = false;
 	double m_ChangeStateTimeInterval = 0;
+	bool m_IsTestNpc0;
 };
 
 
