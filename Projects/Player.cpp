@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "ResourceManager.h"
 #include "Demo.h"
+#include "Logger.h"
 
 //
 //map 1501.map
@@ -23,7 +24,11 @@ std::map<uint32, std::map<uint32, std::vector< uint32>>> Player::s_WeaponAnimati
 Player::Player(int PlayerId,int WeaponId):
 m_PlayerAnimation(2),
 m_WeapAnimation(2),
-m_AnimationState(Idle)
+m_AnimationState(Idle),
+m_IsMove(false),
+m_MoveVelocity(500),
+m_UpdateDelta(0),
+m_MoveList()
 {
 	m_PlayerAnimation[Idle] = new FrameAnimation(
 		ResourceManager::GetInstance()->LoadWdfSprite(s_PlayerAnimationTable[PlayerId][Idle])
@@ -49,6 +54,52 @@ Player::~Player()
 
 void Player::OnUpdate(double dt)
 {
+
+	m_UpdateDelta += dt;
+	if (m_UpdateDelta >= dt) {
+		m_UpdateDelta = 0;
+		if (m_IsMove) {
+			if (!m_MoveList.empty())
+			{
+				double localVelocity = m_MoveVelocity*dt;
+				Pos d = m_MoveList.front();
+				Pos dest;
+				dest.x = d.x * 20 + 10;
+				dest.y = d.y * 20 + 10;
+
+				if (GMath::Astar_GetDistance(m_Pos.x, m_Pos.y, dest.x, dest.y) > localVelocity) {
+					double degree = GMath::Astar_GetAngle(m_Pos.x, m_Pos.y, dest.x, dest.y);
+
+					m_Dir = GMath::Astar_GetDir(degree);
+
+					Logger::Print("degree:%lf dir:%d \n", degree, m_Dir);
+
+					double stepRangeX = cos(DegreeToRadian(degree));
+					double stepRangeY = sin(DegreeToRadian(degree));
+
+					TranslateX(stepRangeX * localVelocity);
+					TranslateY(stepRangeY * localVelocity);
+
+					SetDir(m_Dir);
+				}
+				else {
+					Pos d = m_MoveList.front();
+					SetX(d.x * 20 + 10);
+					SetY(d.y * 20 + 10);
+					m_MoveList.pop_front();
+				}
+			}
+			else
+			{
+				m_IsMove = false;
+				SetAnimationState(Player::Idle);
+				SetDir(m_Dir);
+			}
+			Logger::Print("cur_x:%lf cur_y:%lf\n",GetX(), GetY());
+		}
+
+	}
+
 	m_PlayerAnimation[m_AnimationState]->OnUpdate(dt);
 	m_WeapAnimation[m_AnimationState]->OnUpdate(dt);
 }
@@ -72,6 +123,23 @@ void Player::SetPos(double x, double y)
 {
 	m_Pos.x = x;
 	m_Pos.y = y;
+}
+
+void Player::MoveTo(GameMap* gameMapPtr, int destBoxX, int destBoxY)
+{
+	if (GetBoxX() == destBoxX && GetBoxY() == destBoxY)
+	{
+		m_MoveList.clear();
+		m_IsMove = false;
+		SetAnimationState(Player::Idle);
+	}
+	else
+	{
+		m_MoveList.clear();
+		m_MoveList = gameMapPtr->Move(GetBoxX(), GetBoxY(), destBoxX, destBoxY);
+		m_IsMove = true;
+		SetAnimationState(Player::Moving);
+	}
 }
 
 void Player::ResetDirAll(int dir)

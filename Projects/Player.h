@@ -4,6 +4,7 @@
 #include "FrameAnimation.h"
 #include "Pos.h"
 #include "Config.h"
+#include "GameMap.h"
 
 
 
@@ -45,12 +46,17 @@ public:
 	void TranslateY(double y) { m_Pos.y += y; }
 	
 
+	void MoveTo(GameMap* gameMapPtr, int param2, int param3);
 private:
 	std::vector<FrameAnimation*> m_WeapAnimation;
 	std::vector<FrameAnimation*> m_PlayerAnimation;
 	int m_AnimationState;
 	int m_Dir;
 	Pos m_Pos;
+	std::list<Pos> m_MoveList;
+	double m_UpdateDelta;
+	bool m_IsMove;
 	
+	double m_MoveVelocity;
 };
 

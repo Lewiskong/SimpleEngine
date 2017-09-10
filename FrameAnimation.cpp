@@ -83,6 +83,9 @@ void FrameAnimation::Draw(SpriteRenderer* renderer,int posX ,int posY)
 	
 		m_PosX = posX;
 		m_PosY = posY;
+		
+		if (m_CurrentFrame >= m_Textures.size()) return;
+
 		Texture* t = m_Textures[m_CurrentFrame];
 		renderer->DrawSprite(t,
 			glm::vec2(m_PosX, m_PosY),

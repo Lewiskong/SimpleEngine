@@ -36,41 +36,21 @@ public:
 	void Draw() override;
 	void OnEvent(int button, int action, int mods) override;
 
+private:
 	void ProcessInput();
 	
-	// Game-related State data
 	SpriteRenderer  *m_RendererPtr;
 	
-	GLfloat delta = 0;
+	Texture* m_BlockTexturePtr;
 
-	int dir = 0;
+	GameMap* m_GameMapPtr;
+
+	Player * m_StriderPtr;
 	
-	double src_x = 0 , src_y = 0 ;
-	double dest_x = src_x, dest_y= src_y;
-	double step_range_x = 0;
-	double step_range_y = 0;
-	double move_velocity = 500;
-
-	Pos dest;
-
-	Texture* m_pBlockTexture;
-
-	int actor_state = 1;
-
-	std::list<Pos> mMoveList;
-	bool bmove = true;
-
-	int cur_frame = 0;
-	int frame_count = 0;
-	GameMap* mGameMap;
-
-	int cnt = 0;
-	GLfloat delta2=0;
-	bool draw_cell = false;
-
-	Player * m_Strider;
-
 	std::vector< Player * > m_NPCs;
+
+	bool m_IsChangeState = false;
+	double m_ChangeStateTimeInterval = 0;
 };
 
 
