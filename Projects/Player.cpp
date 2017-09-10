@@ -54,7 +54,6 @@ Player::~Player()
 
 void Player::OnUpdate(double dt)
 {
-
 	m_UpdateDelta += dt;
 	if (m_UpdateDelta >= dt) {
 		m_UpdateDelta = 0;

@@ -24,14 +24,11 @@ void Demo::OnEvent(int button, int action, int mods)
 		double mouseY = InputManager::GetInstance()->GetMouseY();
 		
 		m_StriderPtr->MoveTo(m_GameMapPtr,(-mapOffsetX + mouseX) / 20,(-mapOffsetY + mouseY) / 20);
-
-	
 	}
 }
 
 Demo::Demo()
 {
-	
 	InputManager::GetInstance()->SetMouseEvent(this);
 	
 	m_RendererPtr = new SpriteRenderer();
@@ -45,9 +42,6 @@ Demo::Demo()
 	
 	m_StriderPtr->SetPos(300, 300);
 
-	//m_StriderPtr->MoveTo(m_GameMapPtr, 1550 / 20 + 10, 300 / 20 + 10);
-	
-	
 	int birthPos[10][2] = 
 	{
 		{ 400, 300},
@@ -70,14 +64,6 @@ Demo::Demo()
 		m_NPCs.push_back(player);
 		i++;
 	}
-	
-	
-	//for (Player* npc : m_NPCs)
-	//{
-	//	npc->OnDraw(m_RendererPtr, npc->GetBoxX() + 2, npc->GetBoxY() + 2);
-	//}
-
-
 }
 
 Demo::~Demo()
@@ -123,7 +109,6 @@ void Demo::ProcessInput()
 		}
 	}
 
-
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_A))
 	{
 		m_StriderPtr->TranslateX(-amout);
@@ -145,6 +130,7 @@ void Demo::ProcessInput()
 	}
 
 	int dir = 0;
+
 	if (InputManager::GetInstance()->IsKeyUp(GLFW_KEY_KP_3) || InputManager::GetInstance()->IsKeyUp(GLFW_KEY_3))
 	{
 		dir = static_cast<int>(FrameAnimation::Dir::S_E);
@@ -256,7 +242,7 @@ void Demo::Draw()
 	}
 
 	m_GameMapPtr->DrawMask(m_RendererPtr, m_StriderPtr->GetX(), m_StriderPtr->GetY());
-	//Logger::Print("%lf %lf\n", cur_x, cur_y);
+	
 	//m_GameMapPtr->DrawCell(m_RendererPtr, mapOffsetX, mapOffsetY);
 }
 
