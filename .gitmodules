@@ -19,4 +19,3 @@
 [submodule "external/asio"]
 	path = external/asio
 	url = https://github.com/oceancx/asio.git
-	branch = cpp11-only
