@@ -13,3 +13,10 @@
 [submodule "external/SOIL"]
 	path = external/SOIL
 	url = https://github.com/oceancx/SOIL.git
+[submodule "external/imgui"]
+	path = external/imgui
+	url = https://github.com/oceancx/imgui.git
+[submodule "external/asio"]
+	path = external/asio
+	url = https://github.com/oceancx/asio.git
+	branch = cpp11-only

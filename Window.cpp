@@ -4,10 +4,11 @@
 #include "Shader.h"
 #include "Environment.h"
 #include "InputManager.h"
+#include <imgui_impl_glfw_gl3.h>
+
 
 Window::Window(int width,int height)
 {
-
     // Init GLFW
 	glfwInit();
     // Set all the required options for GLFW
@@ -25,6 +26,8 @@ Window::Window(int width,int height)
 	glewExperimental = GL_TRUE;
     // Initialize GLEW to setup the OpenGL Function pointers
 	glewInit();
+
+	ImGui_ImplGlfwGL3_Init(p_Window,true);
 
     // Define the viewport dimensions
 	// int width, height;
@@ -50,7 +53,7 @@ void Window::Show()
     
 
     p_Game->Start();
-
+	
 	 // Game loop
     while (!glfwWindowShouldClose(p_Window))
     {
@@ -61,16 +64,15 @@ void Window::Show()
       
         // Check if any events have been activiated (key pressed, mouse moved etc.) and call corresponding response functions
     	glfwPollEvents();
+		ImGui_ImplGlfwGL3_NewFrame();
 
         p_Game->Update(deltaTime);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        
-        
         p_Game->Draw();
-
+		
         // Swap the screen buffers
         glfwSwapBuffers(p_Window);
     }

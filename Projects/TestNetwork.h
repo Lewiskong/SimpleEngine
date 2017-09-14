@@ -4,8 +4,8 @@
 
 
 
-// #include "defines.h"
-// #include "IUpdateDraw.h"
+ #include "defines.h"
+ #include "IUpdateDraw.h"
 
 
 
@@ -76,20 +76,20 @@
 // };
 
 
-// class TestNetwork :public IUpdateDraw
-// {
-// public:
-// 	TestNetwork();
-// 	~TestNetwork();
+ class TestNetwork :public IUpdateDraw
+ {
+ public:
+ 	TestNetwork();
+ 	~TestNetwork();
 
 	
-// 	void TestServer();
+ 	void TestServer();
 	
 	
 
-// 	virtual void Update() override;
+ 	virtual void Update() override;
 
 
-// 	virtual void Draw() override;
+ 	virtual void Draw() override;
 
-// };
+ };

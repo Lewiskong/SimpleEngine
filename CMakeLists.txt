@@ -27,6 +27,15 @@ include_directories(SYSTEM external/glfw/include)
 # adding glm
 include_directories(SYSTEM external/glm)
 
+# adding asio
+# F:/Github/asio/asio/include external/asio/asio/include
+include_directories(SYSTEM external/asio/asio/include)
+
+# adding imgui
+include_directories(SYSTEM external/imgui)
+include_directories(SYSTEM external/imgui/examples/opengl3_example)
+
+
 # adding assimp
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "Do not build the tools" FORCE)
 set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "Do not build the tests" FORCE)
@@ -100,6 +109,7 @@ add_definitions(
 	-DTW_NO_LIB_PRAGMA
 	-DTW_NO_DIRECT3D
 	-DGLEW_STATIC
+	-DASIO_STANDALONE
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
@@ -190,6 +200,17 @@ GMath.cpp
 Pos.h
 FrameAnimation.h
 FrameAnimation.cpp
+external/imgui/imgui.cpp
+external/imgui/imgui.h
+external/imgui/imgui_demo.cpp
+external/imgui/imgui_draw.cpp
+external/imgui/imgui_internal.h
+external/imgui/imconfig.h 
+external/imgui/stb_rect_pack.h
+external/imgui/stb_textedit.h
+external/imgui/stb_truetype.h
+external/imgui/examples/opengl3_example/imgui_impl_glfw_gl3.h
+external/imgui/examples/opengl3_example/imgui_impl_glfw_gl3.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
