@@ -28,19 +28,26 @@ include_directories(SYSTEM external/glfw/include)
 include_directories(SYSTEM external/glm)
 
 # adding asio
-# F:/Github/asio/asio/include external/asio/asio/include
+add_definitions(-DASIO_STANDALONE)
+add_definitions(-DASIO_HAS_STD_ATOMIC)
+add_definitions(-DASIO_HAS_STD_SHARED_PTR) 
+add_definitions(-DASIO_HAS_STD_FUNCTION) 
+add_definitions(-DASIO_HAS_STD_ADDRESSOF) 
+add_definitions(-DASIO_HAS_STD_ARRAY) 
+add_definitions(-DASIO_HAS_VARIADIC_TEMPLATES)
+add_definitions(-DASIO_HAS_STD_CHRONO)
+add_definitions(-DASIO_HAS_CSTDINT)
+add_definitions(-DASIO_HAS_STD_TYPE_TRAITS)
 include_directories(SYSTEM external/asio/asio/include)
 
 # adding imgui
 include_directories(SYSTEM external/imgui)
-include_directories(SYSTEM external/imgui/examples/opengl3_example)
-
 
 # adding assimp
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "Do not build the tools" FORCE)
 set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "Do not build the tests" FORCE)
-add_subdirectory(external/assimp)
-include_directories(SYSTEM external/assimp/include)
+#add_subdirectory(external/assimp)
+#include_directories(SYSTEM external/assimp/include)
 
 # adding SOIL
 add_subdirectory(external/SOIL)
@@ -56,7 +63,7 @@ elseif(UNIX)
   set(LIBS glfw)
   list(APPEND LIBS libglew_static)
   list(APPEND LIBS SOIL_Static)
-  list(APPEND LIBS assimp)
+ # list(APPEND LIBS assimp)
   find_package(OpenGL REQUIRED)
   list(APPEND LIBS ${OPENGL_gl_LIBRARY}) # setting LIBS for the first time
   add_definitions(${OPENGL_DEFINITIONS})
@@ -109,7 +116,6 @@ add_definitions(
 	-DTW_NO_LIB_PRAGMA
 	-DTW_NO_DIRECT3D
 	-DGLEW_STATIC
-	-DASIO_STANDALONE
 	-D_CRT_SECURE_NO_WARNINGS
 )
 
@@ -209,8 +215,8 @@ external/imgui/imconfig.h
 external/imgui/stb_rect_pack.h
 external/imgui/stb_textedit.h
 external/imgui/stb_truetype.h
-external/imgui/examples/opengl3_example/imgui_impl_glfw_gl3.h
-external/imgui/examples/opengl3_example/imgui_impl_glfw_gl3.cpp
+imgui_impl_glfw_gl3.h
+imgui_impl_glfw_gl3.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
