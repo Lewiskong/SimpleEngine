@@ -152,8 +152,6 @@ Components/TransformComponent.h
 Components/TransformComponent.cpp
 Projects/TestSence.cpp
 Projects/TestSence.h
-Projects/TestNetwork.cpp
-Projects/TestNetwork.h
 Projects/Demo.h
 Projects/Demo.cpp
 Projects/Player.h

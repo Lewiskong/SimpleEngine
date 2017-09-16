@@ -38,6 +38,7 @@ public:
 
 private:
 	void ProcessInput();
+	void TestServer();
 	
 	SpriteRenderer  *m_RendererPtr;
 	

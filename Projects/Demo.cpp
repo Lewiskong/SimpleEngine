@@ -3,6 +3,7 @@
 #include "FrameAnimation.h"
 #include "Logger.h"
 #include "Random.h"
+#include <asio.hpp>
 
 float Demo::s_ScreenWidth = 800.0f;
 float Demo::s_ScreenHeight = 600.0f;
@@ -65,6 +66,8 @@ Demo::Demo()
 		m_NPCs.push_back(player);
 		i++;
 	}
+
+	TestServer();
 }
 
 Demo::~Demo()
@@ -294,3 +297,22 @@ void Demo::Draw()
 
 }
 
+
+ void Demo::TestServer()
+ {
+	 asio::ip::tcp::iostream s("www.boost.org", "http");
+	 s.expires_from_now(std::chrono::seconds(60));
+	 s << "GET / HTTP/1.0\r0.2cm\n";
+	 s << "Host: www.boost.org\r\n";
+	 s << "Accept: */*\r\n";
+	 s << "Connection: close\r\n\r\n";
+	 std::string header;
+	 while (std::getline(s, header) && header != "\r")
+		 std::cout << header << "\n";
+	 std::cout << s.rdbuf();
+	 if (!s)
+	 {
+		 std::cout << "Socket error: " << s.error().message() << "\n";
+		 return ;
+	 }
+ }
