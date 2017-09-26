@@ -21,7 +21,8 @@ std::map<uint32, std::map<uint32, std::vector< uint32>>> Player::s_WeaponAnimati
 };
 
 
-Player::Player(int PlayerId,int WeaponId):
+Player::Player(int id ,int PlayerId,int WeaponId):
+m_Id(id),
 m_PlayerAnimation(2),
 m_WeapAnimation(2),
 m_AnimationState(Idle),
@@ -71,7 +72,7 @@ void Player::OnUpdate(double dt)
 
 					m_Dir = GMath::Astar_GetDir(degree);
 
-					Logger::Print("degree:%lf dir:%d \n", degree, m_Dir);
+					//Logger::Print("degree:%lf dir:%d \n", degree, m_Dir);
 
 					double stepRangeX = cos(DegreeToRadian(degree));
 					double stepRangeY = sin(DegreeToRadian(degree));
@@ -94,7 +95,7 @@ void Player::OnUpdate(double dt)
 				SetAnimationState(Player::Idle);
 				SetDir(m_Dir);
 			}
-			Logger::Print("cur_x:%lf cur_y:%lf\n",GetX(), GetY());
+			//Logger::Print("cur_x:%lf cur_y:%lf\n",GetX(), GetY());
 		}
 
 	}

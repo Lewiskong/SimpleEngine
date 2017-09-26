@@ -18,7 +18,7 @@ public:
 	static std::map<uint32, std::vector< uint32 >> s_PlayerAnimationTable;
 	static std::map<uint32, std::map<uint32, std::vector<uint32>> > s_WeaponAnimationTable;
 	
-	Player(int PlayerAnimationId,int WeapAnimationId);
+	Player(int id, int PlayerAnimationId,int WeapAnimationId);
 	~Player();
 	void OnUpdate(double dt);
 	
@@ -48,7 +48,8 @@ public:
 	void SetVelocity(int velocity) { m_MoveVelocity = velocity; };
 
 	bool IsMove() { return m_IsMove; }
-		 
+	int GetId() { return m_Id; }
+	
 private:
 	std::vector<FrameAnimation*> m_WeapAnimation;
 	std::vector<FrameAnimation*> m_PlayerAnimation;
@@ -58,7 +59,7 @@ private:
 	std::list<Pos> m_MoveList;
 	double m_UpdateDelta;
 	bool m_IsMove;
-	
+	int m_Id;
 	double m_MoveVelocity;
 };
 

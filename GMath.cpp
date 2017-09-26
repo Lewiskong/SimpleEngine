@@ -10,7 +10,7 @@ double GMath::Astar_GetDistance(double sx, double sy, double ex, double ey)
 
 double GMath::Astar_GetAngle(double sx, double sy, double ex, double ey)
 {
-	Logger::Print("Astar_GetAngle: sx=%lf sy=%lf ex=%lf ey=%lf\n", sx, sy, ex, ey);
+//	Logger::Print("Astar_GetAngle: sx=%lf sy=%lf ex=%lf ey=%lf\n", sx, sy, ex, ey);
 	double dx = ex - sx;
 	double dy = ey - sy;
 	

@@ -5,6 +5,7 @@
 #include "InputManager.h"
 #include "Projects/TestSence.h"
 #include "Projects/Demo.h"
+#include "Network/Message.h"
 
 Engine::~Engine()
 {
@@ -43,4 +44,13 @@ void Engine::Draw()
     mSence->Draw();
 
   
+}
+void Engine::DispatchMove(MoveMessage msg)
+{
+	static_cast<Demo*>(mSence)->OnMove(msg);
+}
+void Engine::SetClient(Client* client)
+{
+
+	static_cast<Demo*>(mSence)->SetClient(client);
 }
