@@ -10,14 +10,19 @@
 
 // PlayerId : 1-12 剑侠客是1
 // WeaponId : 0-160 对应某个武器
+
+//shape.wdf A16A06FF 4FBA48B8 
+//shape.wd3 72013AF5 F2FB1AFA 
 std::map<uint32, std::vector< uint32>> Player::s_PlayerAnimationTable =
 {
-	{ 1, { 0x49386FCE, 0x54F3FC94 } }
+	{ 1, { 0x49386FCE, 0x54F3FC94 } },
+	{ 11,{ 0xA16A06FF , 0x4FBA48B8 } }
 };
 
 std::map<uint32, std::map<uint32, std::vector< uint32>>> Player::s_WeaponAnimationTable =
 {
-	{ 1, { { 120, { 0xDF749306, 0x1BEC0D8A } } } }
+	{ 1, { { 120, { 0xDF749306, 0x1BEC0D8A } } } },
+	{ 11,{ { 120,{ 0x72013AF5, 0xF2FB1AFA } } } }
 };
 
 
